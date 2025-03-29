@@ -1,5 +1,7 @@
 # Full Stack University DB Management Application
 
+![image](https://github.com/user-attachments/assets/5085006d-b321-41fa-b0ef-9f57492b02a3)
+
 This project contains a implementation of university database management application.
 
 The purpose of this application was to create a full-stack application that consists of technologies and libraries that are used within the corporate world.
@@ -10,39 +12,30 @@ The example user would be a database manager, who would interact with the React 
 
 Users are able to access, create, update, save and delete staff, students, courses and degrees of this mock database intuitively on the front-end.
 
-
-SHOW IMAGE OF ADDING COURSE
+![image](https://github.com/user-attachments/assets/2fa7074a-1b54-43af-83f6-bbf3ba1bf2fe)
 
 
 Search functionality is included to let administrators easily find which user they want to edit.
 
-For example, consider the following:
 
+This is useful to find a specific user amongst a large amount of entries. 
 
-SHOW STUDENT PAGE
+For example, if the student Nolan Roy wants to change bachelors.
+To find Nolan Roy, we can search for his first name out of all 2000 students
 
-
-There are >140 pages of students. Using the search functionality I can find a specific user. 
-
-For example, if the student Nolan Roy wants to change bachelors:
-
-
-SHOW STUDENT PAGE
-
-
-To find Nolan Roy, we can search for his first name
-
-
-SHOW STUDENT PAGE AT/AFTER SEARCHING
+![image](https://github.com/user-attachments/assets/9fbcf187-b672-4592-8318-0bf2a16032c8)
 
 
 Click on the card for Nolan Roy and edit his degree from the dropdown
 
 
-SHOW NOLAN ROY PAGE WITH DEGREE DROPDOWN
+![image](https://github.com/user-attachments/assets/dbde6691-3dd3-417a-95f3-cd28af6f8366)
 
+![image](https://github.com/user-attachments/assets/9120bb90-a52b-442f-ab12-6df55c8aaaaa)
 
 And press update - you'll be notified via toastify whether it was successful or not.
+
+![image](https://github.com/user-attachments/assets/9d9302fd-89d5-4224-8c47-e0dac9dc1417)
 
 
 
