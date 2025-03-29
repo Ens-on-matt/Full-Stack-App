@@ -38,22 +38,29 @@ And press update - you'll be notified via toastify whether it was successful or 
 ![image](https://github.com/user-attachments/assets/9d9302fd-89d5-4224-8c47-e0dac9dc1417)
 
 
+# REQUIRED DEPENDENCIES
+
+- [Node.js](https://nodejs.org/en)
+- [Maven](https://maven.apache.org/install.html)
+- [PostgreSQL](https://www.postgresql.org/download/)
+
 
 # INSTALLATION
-To install, first git clone this directory.
 
+First download this repository. 
+
+Using a postgreSQL database manager of your choice, create a new empty database
 
 Open sample-project-backend in IntelliJ (or your IDE of choice)
-  - If using IntelliJ, it should recognise the project and you can run it
-  - If not, run main in SampleProjectApplication
-  - Then maven should install any dependencies and it should run
-
+  - Edit the applications.properties to point the URL, username and password of spring.datasource to this newly made database
+    - Will use port 8080 by default (server.port)
+  - After this, run the project
+  - Then maven will install any dependencies and run. Flyway will populate the database with mock data
 
 Open sample-project-frontend and run the following commands:
-1. `npm install -i`
-2. `npm run dev`
-
-
+1. `npm install -i` to install all dependencies
+2. Update the API_URL in src/api/UniService.tsx to the location of the Spring Boot Application.
+3. `npm run dev` to run the application
 
 # TECHNOLOGIES:
 
@@ -64,11 +71,9 @@ This implementation of a full-stack application utilises many sophisticated feat
 This application consists of 3 applications that communicate between each other:
 1. React Frontend
 2. Microservice Backend (Spring Boot)
-3. PostgreSQL database'
+3. PostgreSQL database
 
-The dataflow between applications occur as following:
-
-Frontend <-> RESTful requests/responses <-> Spring Microservices <-> SQL queries <-> PostgreSQL database
+![image](https://github.com/user-attachments/assets/074c086b-e280-497e-aacc-4fb53835b306)
 
 
 ## Database data
