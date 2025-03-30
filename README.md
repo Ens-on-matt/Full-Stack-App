@@ -8,14 +8,14 @@ The purpose of this application was to create a full-stack application that cons
 
 
 ## Typical use
-The example user would be a database manager, who would interact with the React application to access and make changes to the database as appropriate. 
+The example user would be an adminsitrator, who would interact with the React application to access and make changes to the database as appropriate. 
 
-Users are able to access, create, update, save and delete staff, students, courses and degrees of this mock database intuitively on the front-end.
+Users are able to access, create, update, save and delete staff, students, courses and degrees intuitively via the front-end.
 
 ![image](https://github.com/user-attachments/assets/2fa7074a-1b54-43af-83f6-bbf3ba1bf2fe)
 
 
-Search functionality is included to let administrators easily find which user they want to edit.
+A search option is included to let administrators easily find which user they want to edit.
 
 
 This is useful to find a specific user amongst a large amount of entries. 
@@ -55,18 +55,18 @@ Open sample-project-backend in IntelliJ (or your IDE of choice)
   - Edit the applications.properties to point the URL, username and password of spring.datasource to this newly made database
     - Will use port 8080 by default (server.port)
   - After this, run the project
-  - Then maven will install any dependencies and run. Flyway will populate the database with mock data
+  - Then maven will install any dependencies and run. Flyway will populate the database with initial test data
 
 Open sample-project-frontend and run the following commands:
 1. `npm install -i` to install all dependencies
-2. Update the API_URL in src/api/UniService.tsx to the location of the Spring Boot Application.
+2. Update the API_URL in src/api/UniService.tsx to the location of the Spring Boot Application (if required).
 3. `npm run dev` to run the application
 
 # TECHNOLOGIES:
 
 The React application communicates with Spring Boot microservices to perform queries and updates to the data.
 
-This implementation of a full-stack application utilises many sophisticated features, allowing for further scale and development.
+This implementation of a full-stack application utilises many sophisticated features, allowing for further scaling and development.
 
 This application consists of 3 applications that communicate between each other:
 1. React Frontend
@@ -77,8 +77,8 @@ This application consists of 3 applications that communicate between each other:
 
 
 ## Database data
-The PostgreSQL database is filled with mock data from 3 PostgreSQL scripts using Flyway. 
+The PostgreSQL database is filled with test data from 3 PostgreSQL scripts using Flyway. 
 
-ALL DATA INCLUDED IS FAKE AND DOES NOT CONTAIN INFORMATION ON ANY REAL LIFE PEOPLE. 
+ALL DATA INCLUDED DOES NOT CONTAIN INFORMATION ON ANY REAL LIFE PEOPLE. 
 
 ANY ASSOCIATIONS WITH ANY LIVING/DEAD PERSONS IS THE RESULT OF PURE COINCIDENCE.
