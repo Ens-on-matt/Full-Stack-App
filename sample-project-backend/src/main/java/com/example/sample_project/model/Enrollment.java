@@ -11,7 +11,6 @@ import lombok.With;
 @ToString
 @With
 public class Enrollment implements ResponseObject {
-    private final Integer id;
     private final Integer student;
     private final Integer course;
     private final String status;

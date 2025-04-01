@@ -44,32 +44,36 @@ public class EnrollmentRepository {
         return getEnrollments(sql, parameters, getEnrollmentRowMapper());
     }
 
-    public Optional<Enrollment> getEnrollmentById(@NonNull Integer id) {
+    public Optional<Enrollment> getEnrollmentById(@NonNull Integer student, @NonNull Integer course) {
 
         MapSqlParameterSource parameters = new MapSqlParameterSource();
         String sql = """
                 SELECT 
-                      id,
                       student,
                       course,
                       status
                 FROM main.enrollment
-                WHERE id=:enrollment_id
+                WHERE student=:student_id AND course=:course_id
                 """;
 
         log.debug("Query {}", sql);
 
-        parameters.addValue("enrollment_id", id);
+        parameters.addValue("student_id", student);
+        parameters.addValue("course_id", course);
 
-        return Optional.of(getEnrollments(sql, parameters, getEnrollmentRowMapper()).get(0));
+        List<Enrollment> enrollments = getEnrollments(sql, parameters, getEnrollmentRowMapper());
+        if (enrollments.isEmpty()) {
+            return Optional.empty();
+        } else {
+            return Optional.of(enrollments.get(0));
+        }
     }
 
-    public List<Enrollment> listAllEnrollmentsForStudent(Integer id) {
+    public List<Enrollment> listAllEnrollmentsForStudent(@NonNull Integer student_id) {
 
         MapSqlParameterSource parameters = new MapSqlParameterSource();
         String sql = """
                 SELECT 
-                      id,
                       student,
                       course,
                       status
@@ -77,12 +81,12 @@ public class EnrollmentRepository {
                 WHERE student=:student_id
                 """;
 
-        parameters.addValue("student_id", id);
+        parameters.addValue("student_id", student_id);
 
         return getEnrollments(sql, parameters, getEnrollmentRowMapper());
     }
 
-    public List<Enrollment> listAllEnrollmentsInCourse(Integer id) {
+    public List<Enrollment> listAllEnrollmentsInCourse(@NonNull Integer course_id) {
         MapSqlParameterSource parameters = new MapSqlParameterSource();
         String sql = """
                 SELECT 
@@ -94,7 +98,7 @@ public class EnrollmentRepository {
                 WHERE course=:course_id
                 """;
 
-        parameters.addValue("course_id", id);
+        parameters.addValue("course_id", course_id);
 
         return getEnrollments(sql, parameters, getEnrollmentRowMapper());
     }
@@ -103,7 +107,6 @@ public class EnrollmentRepository {
         MapSqlParameterSource parameters = new MapSqlParameterSource();
         String sql = """
             SELECT 
-                  id,
                   student,
                   course,
                   status
@@ -124,7 +127,6 @@ public class EnrollmentRepository {
         MapSqlParameterSource parameters = new MapSqlParameterSource();
         String sql = """                
             SELECT 
-                  id,
                   student,
                   course,
                   status
@@ -138,7 +140,7 @@ public class EnrollmentRepository {
         return getEnrollments(sql, parameters, getEnrollmentRowMapper());
     }
 
-    public Optional<Integer> saveNewEnrollment(@NonNull Enrollment enrollment) {
+    public Optional<Enrollment> saveNewEnrollment(@NonNull Enrollment enrollment) {
         log.info("Repository saveNewEnrollment called");
 
         MapSqlParameterSource parameters = new MapSqlParameterSource();
@@ -152,7 +154,7 @@ public class EnrollmentRepository {
                         :course,
                         :status
                         ) 
-                RETURNING id
+                RETURNING *
                 """;
 
         log.debug("Query {}", sql);
@@ -161,28 +163,24 @@ public class EnrollmentRepository {
         parameters.addValue("course", enrollment.getCourse());
         parameters.addValue("status", enrollment.getStatus());
 
-        NamedParameterJdbcTemplate namedJdbcTemplateObject = new NamedParameterJdbcTemplate(jdbcOperations);
-        return Optional.of(namedJdbcTemplateObject.query(sql, parameters, GenericRowMappers.getIDRowMapper()).get(0));
+        return Optional.of(getEnrollments(sql, parameters, getEnrollmentRowMapper()).get(0));
     }
 
-    public Optional<Enrollment> updateEnrollmentMember(Enrollment enrollment) {
+    public Optional<Enrollment> updateEnrollmentStatus(Enrollment enrollment) {
         log.info("Repository updateEnrollmentMember called");
 
         MapSqlParameterSource parameters = new MapSqlParameterSource();
         String sql = """
                 UPDATE main.enrollment
-                SET student=:student,
-                    course=:course,
-                    status=:status
-                WHERE id=:id
+                SET status=:status
+                WHERE student=:student_id AND course=:course_id
                 RETURNING *
                 """;
 
         log.debug("Query {}", sql);
 
-        parameters.addValue("id", enrollment.getId());
-        parameters.addValue("student", enrollment.getStudent());
-        parameters.addValue("course", enrollment.getCourse());
+        parameters.addValue("student_id", enrollment.getStudent());
+        parameters.addValue("course_id", enrollment.getCourse());
         parameters.addValue("status", enrollment.getStatus());
 
         return Optional.of(getEnrollments(sql, parameters, getEnrollmentRowMapper()).get(0));
@@ -198,16 +196,17 @@ public class EnrollmentRepository {
         return namedJdbcTemplateObject.query(sql, parameters, getTableCountRowMapper()).get(0);
     }
 
-    public Boolean deleteEnrollment(Integer id) {
+    public Boolean deleteEnrollment(@NonNull Integer student, @NonNull Integer course) {
         log.info("Repository deleteEnrollment called");
         MapSqlParameterSource parameters = new MapSqlParameterSource();
         String sql = """
                 DELETE FROM main.enrollment
-                WHERE id = :id
+                WHERE student=:student_id AND course=:course_id
                 RETURNING *
                 """;
 
-        parameters.addValue("id", id);
+        parameters.addValue("student_id", student);
+        parameters.addValue("course_id", course);
 
         NamedParameterJdbcTemplate namedJdbcTemplateObject = new NamedParameterJdbcTemplate(jdbcOperations);
         try {
@@ -231,7 +230,6 @@ public class EnrollmentRepository {
     private RowMapper<Enrollment> getEnrollmentRowMapper() {
         return (ResultSet rs, int row) ->
                 Enrollment.builder()
-                        .id(rs.getInt("id"))
                         .student(rs.getInt("student"))
                         .course(rs.getInt("course"))
                         .status(rs.getString("status"))

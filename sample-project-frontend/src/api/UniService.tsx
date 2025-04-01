@@ -156,6 +156,16 @@ export async function getDataEntry(id : number, dataType : string) {
     }
 }
 
+export async function getEnrollmentById(student_id : number, course_id : number) {
+    try {
+        const response = await axios.get(`${API_URL}/${DatabaseTypes.ENROLLMENT}/get/${student_id}-${course_id}`);
+        return response.data;
+    } catch (error) {
+        console.log ('Get axios error ', JSON.stringify(error));
+        return null;
+    }
+}
+
 export async function searchAndGetPageOfData(searchTerm: string, size: number, dataType : string) {
     try {
         const response = await axios.get(`${API_URL}/${dataType}/search/${searchTerm}/${size}`);
@@ -239,12 +249,10 @@ export async function deleteDegree(id : number, degree : Degree) {
     return HttpStatusCode.NoContent;
 }
 
-export async function deleteEnrollment(id : number, enrollment : Enrollment) {
+export async function deleteEnrollment(enrollment : Enrollment) {
     try {
-        if (id == enrollment.id) {
-            const response = await axios.delete(`${API_URL}/${DatabaseTypes.ENROLLMENT}/delete/${id}`);
-            return response.status == HttpStatusCode.Ok;
-        }
+        const response = await axios.delete(`${API_URL}/${DatabaseTypes.ENROLLMENT}/delete/${enrollment.student}-${enrollment.course}`);
+        return response.status == HttpStatusCode.Ok;
     } catch (error) {
         console.log ('Put axios error ', JSON.stringify(error));
     }

@@ -47,13 +47,13 @@ public class EnrollmentController {
         }
     }
 
-    @GetMapping(value = "/get/{id}")
+    @GetMapping(value = "/get/{student}-{course}")
     public ResponseEntity<ResponseObject> getEnrollmentById (
-        @PathVariable Integer id
+        @PathVariable Integer student, @PathVariable Integer course
     ) {
        LOGGER.info("Controller getEnrollmentById called");
 
-        Optional<Enrollment> enrollmentOpt = enrollmentRepository.getEnrollmentById(id);
+        Optional<Enrollment> enrollmentOpt = enrollmentRepository.getEnrollmentById(student, course);
 
         if (enrollmentOpt.isPresent()) {
             return ResponseEntity
@@ -94,7 +94,9 @@ public class EnrollmentController {
 
     @PutMapping(value = "/put", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ResponseObject> saveEnrollment (@RequestBody Enrollment enrollment) {
-        if (enrollment.getId() == -1) {
+        Optional<Enrollment> enrollmentOpt = enrollmentRepository.getEnrollmentById(enrollment.getStudent(), enrollment.getCourse());
+
+        if (enrollmentOpt.isEmpty()) {
             return saveNewEnrollment(enrollment);
         } else {
             return updateEnrollment(enrollment);
@@ -104,11 +106,11 @@ public class EnrollmentController {
     public ResponseEntity<ResponseObject> saveNewEnrollment (Enrollment enrollment) {
         LOGGER.info("Controller saveNewEnrollment called");
 
-        Optional<Integer> enrollmentOpt = enrollmentRepository.saveNewEnrollment(enrollment);
+        Optional<Enrollment> enrollmentOpt = enrollmentRepository.saveNewEnrollment(enrollment);
 
         if (enrollmentOpt.isPresent()) {
-            Enrollment updated_enrollment = enrollment.withId(enrollmentOpt.get());
-            LOGGER.info("New enrollment member has id {}", enrollmentOpt.get());
+            Enrollment updated_enrollment = enrollmentOpt.get();
+            LOGGER.info("New enrollment member has id {}-{}", updated_enrollment.getStudent(), updated_enrollment.getCourse());
             return ResponseEntity
                     .status(HttpStatus.OK)
                     .body(updated_enrollment);
@@ -122,7 +124,7 @@ public class EnrollmentController {
     public ResponseEntity<ResponseObject> updateEnrollment (Enrollment enrollment) {
         LOGGER.info("Controller updateEnrollment called");
 
-        Optional<Enrollment> enrollmentOpt = enrollmentRepository.updateEnrollmentMember(enrollment);
+        Optional<Enrollment> enrollmentOpt = enrollmentRepository.updateEnrollmentStatus(enrollment);
 
         if (enrollmentOpt.isPresent()) {
             return ResponseEntity
@@ -135,21 +137,21 @@ public class EnrollmentController {
         }
     }
 
-    @DeleteMapping(value = "delete/{id}")
-    public ResponseEntity<ResponseObject> deleteEnrollment (@PathVariable Integer id) {
+    @DeleteMapping(value = "delete/{student}-{course}")
+    public ResponseEntity<ResponseObject> deleteEnrollment (@PathVariable Integer student, @PathVariable Integer course) {
         LOGGER.info("Controller deleteEnrollment called");
 
-        Optional<Enrollment> enrollmentOpt = enrollmentRepository.getEnrollmentById(id);
+        Optional<Enrollment> enrollmentOpt = enrollmentRepository.getEnrollmentById(student, course);
 
         if (enrollmentOpt.isPresent()) {
             Enrollment enrollment_in_db = enrollmentOpt.get();
             LOGGER.info("Deleting {}", enrollment_in_db);
-            if (enrollmentRepository.deleteEnrollment(id)) {
+            if (enrollmentRepository.deleteEnrollment(student, course)) {
                 return ResponseEntity
                         .status(HttpStatus.OK)
                         .body(null);
             } else {
-                return internalServer500(String.format("Error deleting enrollment with id %d", id));
+                return internalServer500(String.format("Error deleting enrollment with id %d-%d", student, course));
             }
         }
         return notFound404("Enrollment member provided not found.");

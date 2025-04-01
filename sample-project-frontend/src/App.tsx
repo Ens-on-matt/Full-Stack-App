@@ -14,6 +14,8 @@ import BlankForm from "./components/form_entry/BlankForm.tsx";
 import NewStudent from "./components/form_entry/NewStudent.tsx";
 import NewCourse from "./components/form_entry/NewCourse.tsx";
 import NewDegree from "./components/form_entry/NewDegree.tsx";
+import ActionBar from "./components/ActionBar.tsx";
+import StudentEnrollment from "./components/StudentEnrollment.tsx";
 
 function App() {
   const newEntryModal = useRef<HTMLDialogElement>(null);
@@ -37,8 +39,9 @@ function App() {
         <Route path='/degree' element={<Header toggleModal={toggleFormModal} submitSearchTerm={setSearchTerm} database={DatabaseTypes.DEGREE}/>} />
       </Routes>
 
+      <ActionBar />
 
-    <main className='main'>
+      <main className='main'>
       <div className='container'>
         <Routes>
           <Route path='*' element={<Navigate to='/' />} />
@@ -47,6 +50,8 @@ function App() {
           <Route path='/student' element={<StudentList pageSize={pageSize} searchTerm={searchTerm} refresh={refresh} setRefresh={setRefresh}/>} />
           <Route path='/course' element={<CourseList pageSize={pageSize} searchTerm={searchTerm} refresh={refresh} setRefresh={setRefresh}/>} />
           <Route path='/degree' element={<DegreeList pageSize={pageSize} searchTerm={searchTerm} refresh={refresh} setRefresh={setRefresh}/>} />
+          <Route path='/student-enrollment' element={<StudentEnrollment />} />
+          <Route path='/course-report' element={<LandingPage />} />
         </Routes>
       </div>
     </main>

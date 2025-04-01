@@ -95,11 +95,10 @@ ALTER TABLE IF EXISTS main.student
 
 CREATE TABLE IF NOT EXISTS main.enrollment
 (
-    id integer NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1 ),
     student integer NOT NULL,
     course integer NOT NULL,
     status text COLLATE pg_catalog."default" NOT NULL,
-    CONSTRAINT course_enrollments_pkey PRIMARY KEY (id)
+    CONSTRAINT enrollments_pkey PRIMARY KEY (student, course)
     )
 
 TABLESPACE pg_default;
