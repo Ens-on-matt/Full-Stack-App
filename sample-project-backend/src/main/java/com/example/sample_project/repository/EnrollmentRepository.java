@@ -31,7 +31,6 @@ public class EnrollmentRepository {
         MapSqlParameterSource parameters = new MapSqlParameterSource();
         String sql = """
                 SELECT 
-                      id,
                       student,
                       course,
                       status
@@ -90,7 +89,6 @@ public class EnrollmentRepository {
         MapSqlParameterSource parameters = new MapSqlParameterSource();
         String sql = """
                 SELECT 
-                      id,
                       student,
                       course,
                       status
