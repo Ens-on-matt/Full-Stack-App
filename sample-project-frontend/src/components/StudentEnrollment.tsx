@@ -145,7 +145,7 @@ const StudentEnrollment:FC = () => {
     }
 
     return (
-        <div className='student-enrollment'>
+        <main className='main tall-enrollment'>
             <div className='form_footer'>
                 <AsyncSelect className='student-enrollment-select' value={student} defaultOptions cacheOptions loadOptions={studentOptions} onChange={updateStudentID} required/>
                 {student.id != -1 && <h2 className='student-enrollment'>ID={student.id}</h2>}
@@ -184,7 +184,7 @@ const StudentEnrollment:FC = () => {
                 </div>
 
             </div>
-        </div>
+        </main>
     )
 }
 

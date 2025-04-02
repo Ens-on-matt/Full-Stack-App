@@ -660,14 +660,23 @@ dialog[open] {
 
 /* Student Enrollment Section */
 
+.tall-enrollment {
+	height: 80vh;
+}
+
 .student-enrollment {
 	text-align: center;
 	padding-left: 10%;
 	padding-right: 10%;
+	align-content: center;
+	justify-content: start;
 }
 
-.student-enrollment .h1 .h2 .h3 {
-	align-content: center;
+.student-enrollment-form {
+	display: flex;
+	justify-content: start;
+	align-items: center;
+	margin-top: 35px;
 }
 
 .student-enrollment-select {
@@ -684,7 +693,7 @@ dialog[open] {
 .enrollment-table {
 	display: flex;
 	flex-direction: row;
-	border-top: 5px solid var(--black_80);
+	border-top: 2px solid var(--black_80);
 }
 
 .enrollment-table-header {
@@ -701,16 +710,15 @@ dialog[open] {
 	text-align: center;
 	width: 100%;
 	flex-direction: column;
-	align-items: center;
-	border: 5px solid var(--black_80);
+	align-items: start;
+	border: 2px solid var(--black_80);
 }
 
 .sub-table div {
-	border: 5px solid var(--black_80);
+	border: 2px solid var(--black_80);
 }
 
 .sub-table span {
-	font-weight: bold;
 	font-size: 2rem;
 }
 
@@ -746,7 +754,6 @@ dialog[open] {
 	width: 10%;
 	height: 100vh;
 	display: flex;
-	justify-content: top;
 	position: fixed;
 	top: 0;
 	left: -10%;
@@ -777,8 +784,9 @@ dialog[open] {
 	justify-content: center;
 	align-items: center;
 	padding: 8px 0px 8px 0px;
+	width: 90%;
+	height: auto;
 	list-style: none;
-	height: 60px;
 }
 
 .nav-text a {
@@ -820,26 +828,81 @@ dialog[open] {
 	background-color: var(--spooky-black-2);
 }
 
-span {
-	margin-left: 16px;
+
+/* Course Report */
+
+.course-report {
+	text-align: center;
+	padding-left: 10%;
+	padding-right: 10%;
 }
 
-* {
-	box-sizing: border-box;
-	margin: 0;
-	padding: 0;
-	font-family: 'Montserrat', sans-serif;
+.course-report-select {
+	width: 100%;
+	border: 3px solid #000000;
+	font-size: 2rem;
 }
 
-.home, .report, .products {
+.course-report .span {
+	color: var(--selective-blue);
+	padding: 20px;
+}
+
+.report-table {
 	display: flex;
-	height: 90vh;
-	align-items: center;
-	justify-content: center;
-	font-size: 3rem;
+	flex-direction: row;
+	border-top: 2px solid var(--black_80);
 }
 
+.report-table-header {
+	margin-top: 10px;
+	margin-bottom: 10px;
+	flex-direction: row
+}
 
+.report-table-degree {
+	font-size: 2rem;
+}
 
+.report-sub-table {
+	text-align: center;
+	width: 100%;
+	flex-direction: column;
+	align-items: center;
+	border: 5px solid var(--black_80);
+}
 
+.report-sub-table div {
+	border-bottom: 2px solid var(--black_80);
+	margin-bottom: 5%;
+}
 
+.report-sub-table span {
+	font-weight: bold;
+	font-size: 2rem;
+}
+
+.report-sub-table {
+	list-style-type: disc;
+	align-items: center;
+	align-content: start;
+	padding: 4px;
+	border-top: 1px solid var(--black_80);
+}
+
+.report-description {
+	height: 70vh;
+	width: 100%;
+	padding: 5% 1% 5% 0%;
+	text-align: center;
+}
+
+.report-entity {
+	text-decoration: none;
+	width: 100%;
+	align-items: center;
+	padding: inherit;
+	text-align: left;
+	font-size: 1.5rem;
+	border: 1px solid var(--black_80);
+}

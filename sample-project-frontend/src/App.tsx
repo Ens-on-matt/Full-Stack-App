@@ -16,6 +16,7 @@ import NewCourse from "./components/form_entry/NewCourse.tsx";
 import NewDegree from "./components/form_entry/NewDegree.tsx";
 import ActionBar from "./components/ActionBar.tsx";
 import StudentEnrollment from "./components/StudentEnrollment.tsx";
+import CourseReport from "./components/CourseReport.tsx";
 
 function App() {
   const newEntryModal = useRef<HTMLDialogElement>(null);
@@ -51,7 +52,7 @@ function App() {
           <Route path='/course' element={<CourseList pageSize={pageSize} searchTerm={searchTerm} refresh={refresh} setRefresh={setRefresh}/>} />
           <Route path='/degree' element={<DegreeList pageSize={pageSize} searchTerm={searchTerm} refresh={refresh} setRefresh={setRefresh}/>} />
           <Route path='/student-enrollment' element={<StudentEnrollment />} />
-          <Route path='/course-report' element={<LandingPage />} />
+          <Route path='/course-report' element={<CourseReport />} />
         </Routes>
       </div>
     </main>
