@@ -22,10 +22,12 @@ const StudentEnrollment:FC = () => {
     const [selectedDegree, setSelectedDegree] = useState<Degree>();
     const [enrollments, setEnrollments] = useState<Enrollment[]>([]);
 
+    // Local constants used to split courses into the relevant column
     const COURSE_NOT_ENROLLED = 0;
     const COURSE_PARTIAL_COMPLETED = 1;
     const COURSE_FULLY_COMPLETED = 2;
 
+    /* FETCH FUNCTIONS THAT GET INFORMATION FROM THE DATABASE */
     const fetchDegree = async (degree_id: number) => {
         try {
             const studentDegree: Degree = await getDataEntry(degree_id, DatabaseTypes.DEGREE);
@@ -42,14 +44,13 @@ const StudentEnrollment:FC = () => {
             setCoursesForDegree(coursesForDegree);
         } catch (error) {
             console.log(error);
-            toastError("Error when fetching courses");
+            toastError("Error when fetching courses required for degree");
         }
-
     }
 
-    const fetchEnrollments = async(id: number) => {
+    const fetchEnrollments = async(student_id: number) => {
         try {
-            const enrollmentsForCourse: Enrollment[] = await getEnrollmentsForStudent(id);
+            const enrollmentsForCourse: Enrollment[] = await getEnrollmentsForStudent(student_id);
             setEnrollments(enrollmentsForCourse);
         } catch (error) {
             console.log(error)
@@ -57,6 +58,8 @@ const StudentEnrollment:FC = () => {
         }
     }
 
+    // Wrapper async method that handles updates to information relating to the student.
+    // (What courses the student is enrolled in, and what courses are required for the degree the student is studying)
     const fetchStudentInfo = async () => {
         try {
             if (student && student.id != -1) {
@@ -64,7 +67,6 @@ const StudentEnrollment:FC = () => {
                 const degree_id_num = parseInt(student.degree_id)
                 fetchDegree(degree_id_num)
                 fetchCourses(degree_id_num)
-                //toastSuccess('Finished loading all student info');
             }
         } catch (error: unknown) {
             console.log(error);
@@ -72,6 +74,7 @@ const StudentEnrollment:FC = () => {
         }
     };
 
+    // Finds what stage the student has made in the course given a course_id and all enrollments.
     const courseInEnrollments = (course_id: number, enrollments: Enrollment[]) => {
         for (const e of enrollments) {
             if (course_id ==  parseInt(e.course)) {
@@ -82,6 +85,8 @@ const StudentEnrollment:FC = () => {
         return COURSE_NOT_ENROLLED;
     }
 
+    // Gets first 10 students if no query, else searches for the 10 closest students (by name).
+    // Returns a list of students with added properties so AsyncSelect can use the list (.label and .value).
     const studentOptions = async (inputValue: string) => {
         let response: studentPage;
         if (inputValue == '') {
@@ -96,16 +101,15 @@ const StudentEnrollment:FC = () => {
         return response.list;
     }
 
+    // Wraps the student state variable with a check that the student returned by the AsyncSelect is valid.
     const updateStudentID = (selectedStudent : SingleValue<Student>) => {
         if (selectedStudent) {
             setStudent(selectedStudent);
         }
     }
 
-    useEffect(() => {
-        fetchStudentInfo();
-    }, [student]);
-
+    /* FUNCTIONS THAT SEND REQUESTS TO UPDATE OR REMOVE ENTRIES TO THE DATABASE */
+    // Update database to enroll student (id) in course (id)
     const enrollInCourse = async (student_id: number, course_id: number) => {
         const newEnrollment = new Enrollment(`${student_id}`, `${course_id}`, EnrollmentProgress.PARTIAL);
         const response : Enrollment = await saveEnrollment(newEnrollment)
@@ -117,6 +121,7 @@ const StudentEnrollment:FC = () => {
         }
     }
 
+    // Update database to drop student (id) from course (id) (even if student has been stated to complete the course).
     const dropEnrolledCourse = async (student_id: number, course_id: number) => {
         const enrollment = new Enrollment(`${student_id}`, `${course_id}`, EnrollmentProgress.PARTIAL);
         const deletedSuccess = await deleteEnrollment(enrollment);
@@ -129,6 +134,7 @@ const StudentEnrollment:FC = () => {
         }
     }
 
+    // Update database to indicate that student (id) has completed course (id).
     const completeEnrolledCourse = async (student_id: number, course_id: number) => {
         const newEnrollment = new Enrollment(`${student_id}`, `${course_id}`, EnrollmentProgress.COMPLETED);
         const response : Enrollment = await saveEnrollment(newEnrollment)
@@ -140,9 +146,10 @@ const StudentEnrollment:FC = () => {
         }
     }
 
-    const removeCompletedCourse = (student_id: number, course_id: number) => {
-        dropEnrolledCourse(student_id, course_id);
-    }
+    // React Hook to get student's enrollments and the names of the relevant courses when student changes
+    useEffect(() => {
+        fetchStudentInfo();
+    }, [student]);
 
     return (
         <main className='main student-enrollment'>
@@ -177,7 +184,7 @@ const StudentEnrollment:FC = () => {
                     <span>COMPLETED</span>
                     { coursesForDegree && coursesForDegree.map((course : Course) => {
                             if (courseInEnrollments(course.id, enrollments) == COURSE_FULLY_COMPLETED) {
-                                return (<li key={course.id}>{course.name}<div className='enrollment-spacing'/><Button className='btn-danger bi bi-x-lg enrollment-btn' onClick={() => removeCompletedCourse(student.id, course.id)}/></li>);
+                                return (<li key={course.id}>{course.name}<div className='enrollment-spacing'/><Button className='btn-danger bi bi-x-lg enrollment-btn' onClick={() => dropEnrolledCourse(student.id, course.id)}/></li>);
                             }
                         }
                     )}
