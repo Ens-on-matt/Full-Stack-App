@@ -12,6 +12,7 @@ import Student from "../assets/Student.tsx";
 import Enrollment from "../assets/Enrollment.tsx";
 import Staff from "../assets/Staff.tsx";
 import Degree from "../assets/Degree.tsx";
+import EnrollmentProgress from "../assets/EnrollmentProgress.tsx";
 
 
 const CourseReport:FC = () => {
@@ -35,8 +36,10 @@ const CourseReport:FC = () => {
         if (courseEnrollments.length > 0) {
             const studentsInCourse: Student[] = [];
             for (const enrollment of courseEnrollments) {
-                const student: Student = await getDataEntry(parseInt(enrollment.student), DatabaseTypes.STUDENT);
-                if (student?.id) studentsInCourse.push(student);
+                if (enrollment.status == EnrollmentProgress.PARTIAL) {
+                    const student: Student = await getDataEntry(parseInt(enrollment.student), DatabaseTypes.STUDENT);
+                    if (student?.id) studentsInCourse.push(student);
+                }
             }
             setStudents(studentsInCourse)
         }
@@ -73,8 +76,8 @@ const CourseReport:FC = () => {
             <AsyncSelect className='course-report-select' value={course} defaultOptions cacheOptions loadOptions={courseOptions} onChange={updateCourseID} required/>
             <div className='report-table'>
                 <div className='report-description'>
-                    <p className='report-entity'>LECTURER <p className='report-entity-description'>{professor.name}</p></p>
-                    <p className='report-entity'>DEGREE <p className='report-entity-description'>{degree.name}</p></p>
+                    <div className='report-entity'>LECTURER <p className='report-entity-description'>{professor.name}</p></div>
+                    <div className='report-entity'>DEGREE <p className='report-entity-description'>{degree.name}</p></div>
                 </div>
                 <div className='report-sub-table'>
                     <div>STUDENTS</div>
