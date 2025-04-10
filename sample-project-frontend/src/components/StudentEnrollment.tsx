@@ -148,7 +148,7 @@ const StudentEnrollment:FC = () => {
         <main className='main student-enrollment'>
             <div className='form_footer'>
                 <AsyncSelect className='student-enrollment-select' value={student} defaultOptions cacheOptions loadOptions={studentOptions} onChange={updateStudentID} required/>
-                {student.id != -1 && <div className='student-enrollment-ID'><span>ID</span><i>{student.id}</i></div>}
+                {student.id != -1 && <div className='student-enrollment-ID'>ID<span>{student.id}</span></div>}
             </div>
 
             <div className="enrollment-degree">{selectedDegree && `Bachelor of ${selectedDegree.name}`}</div>

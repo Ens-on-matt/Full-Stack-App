@@ -2,7 +2,7 @@ import {useState} from "react";
 import {Link} from "react-router-dom";
 
 const ActionBar = () => {
-    const [isOpen, setIsOpen] = useState(false);
+    const [isOpen, setIsOpen] = useState(true);
     const toggleActionBar = () => setIsOpen(!isOpen);
 
     return (

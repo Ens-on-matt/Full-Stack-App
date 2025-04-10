@@ -875,19 +875,16 @@ dialog[open] {
 	justify-content: center;
 	text-align: center;
 	align-items: start;
+	font-size: 2.2rem;
 }
 
 .student-enrollment-ID span {
-	font-size: 2.2rem;
-	padding-right: 10px;
-}
-
-.student-enrollment-ID i {
 	font-size: 2rem;
 	background-color: white;
 	border-radius: 10%;
 	border: 1px solid var(--black_50);
 	padding: 10%;
+	margin-left: 10px;
 }
 
 .student-enrollment .span {
