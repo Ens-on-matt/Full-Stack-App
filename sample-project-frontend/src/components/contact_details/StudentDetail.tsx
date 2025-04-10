@@ -26,7 +26,7 @@ const StudentDetail:FC<props> = ({ id, toggleModal, setRefresh }) => {
     const [student, setStudent] = useState(new Student());
     const [selectedDegree, setSelectedDegree] = useState<Degree>();
 
-    const updateContact = async (student: Student) => {
+    const updateStudent = async (student: Student) => {
         try {
             await saveStudent(student);
             toastSuccess('Updated student');
@@ -36,7 +36,7 @@ const StudentDetail:FC<props> = ({ id, toggleModal, setRefresh }) => {
         }
     }
 
-    const fetchContact = async (id: number) => {
+    const fetchStudent = async (id: number) => {
         try {
             const data : Student = await getDataEntry(id, DatabaseTypes.STUDENT);
             if (data?.name && data?.degree_id) {
@@ -56,19 +56,7 @@ const StudentDetail:FC<props> = ({ id, toggleModal, setRefresh }) => {
         }
     };
 
-    const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setStudent({...student, [event.target.name]: event.target.value});
-    }
-
-    const submitStudent = (event: React.ChangeEvent<HTMLFormElement>) => {
-        if (selectedDegree?.id) student.degree_id = `${selectedDegree.id}`
-
-        event.preventDefault();
-        updateContact(student);
-        setRefresh(true);
-    }
-
-    const onDelete = async () => {
+    const confirmAndDeleteStudent = async () => {
         const userConfirmed = window.confirm("Are you sure you want to delete?");
         if (userConfirmed) {
             const responseStatus = await deleteStudent(id, student);
@@ -106,9 +94,23 @@ const StudentDetail:FC<props> = ({ id, toggleModal, setRefresh }) => {
         }
     }
 
+    // Updates student state variable each time the user updates a property of the student
+    const onStudentFormChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setStudent({...student, [event.target.name]: event.target.value});
+    }
+
+    // Updates student when user presses 'Save'.
+    const submitStudent = (event: React.ChangeEvent<HTMLFormElement>) => {
+        if (selectedDegree?.id) student.degree_id = `${selectedDegree.id}`
+
+        event.preventDefault();
+        updateStudent(student);
+        setRefresh(true);
+    }
+
 
     useEffect(() => {
-        fetchContact(id);
+        fetchStudent(id);
     }, [id]);
 
 
@@ -119,15 +121,15 @@ const StudentDetail:FC<props> = ({ id, toggleModal, setRefresh }) => {
                     <input type="hidden" name="id" defaultValue={student.id} required />
                     <div className='input-box'>
                         <span className="details">Name</span>
-                        <input type="text" value={student.name} onChange={onChange} name="name" required/>
+                        <input type="text" value={student.name} onChange={onStudentFormChange} name="name" required/>
                     </div>
                     <div className='input-box'>
                         <span className="details">Email</span>
-                        <input type="text" value={student.email} onChange={onChange} name="email" required/>
+                        <input type="text" value={student.email} onChange={onStudentFormChange} name="email" required/>
                     </div>
                     <div className='input-box'>
                         <span className="details">Phone</span>
-                        <input type="text" value={student.phone_number} onChange={onChange} name="phone_number" required/>
+                        <input type="text" value={student.phone_number} onChange={onStudentFormChange} name="phone_number" required/>
                     </div>
                     <div className='input-box'>
                         <span className="details">Degree ID</span>
@@ -136,7 +138,7 @@ const StudentDetail:FC<props> = ({ id, toggleModal, setRefresh }) => {
                 </div>
                 <div className='form_footer'>
                     <button type="submit" className="btn">Save</button>
-                    <button onClick={() => onDelete()} className="btn btn-danger">Delete</button>
+                    <button onClick={() => confirmAndDeleteStudent()} className="btn btn-danger">Delete</button>
                 </div>
             </form>
         </div>

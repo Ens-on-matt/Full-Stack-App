@@ -10,6 +10,8 @@ interface props {
 }
 
 const StudentBox:FC<props> = ({ student, degrees, showDetails, toggleModal }  ) => {
+
+    // Activates StudentDetail modal and provides the student's ID when this box when pressed.
     const handleOnClick = () => {
         showDetails(student.id)
         toggleModal(true);

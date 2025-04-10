@@ -9,6 +9,7 @@ interface props {
 
 const StaffBox:FC<props> = ({ staff, showDetails, toggleModal }  ) => {
 
+    // Activates StaffDetail modal and provides the staff member's ID when this box when pressed.
     const handleOnClick = () => {
         showDetails(staff.id);
         toggleModal(true);

@@ -9,6 +9,7 @@ interface props {
 
 const DegreeBox:FC<props> = ({ degree, showDetails, toggleModal }  ) => {
 
+    // Activates DegreeDetail modal and provides the degree's ID when this box when pressed.
     const handleOnClick = () => {
         showDetails(degree.id);
         toggleModal(true);

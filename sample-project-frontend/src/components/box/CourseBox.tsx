@@ -13,6 +13,7 @@ interface props {
 
 const CourseBox:FC<props> = ({ course, professors, degrees, showDetails, toggleModal }  ) => {
 
+    // Activates CourseDetail modal and provides the course's ID when this box when pressed.
     const handleOnClick = () => {
         showDetails(course.id);
         toggleModal(true);

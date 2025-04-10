@@ -16,7 +16,7 @@ interface props {
 const DegreeDetail:FC<props> = ({ id, toggleModal, setRefresh }) => {
     const [degree, setDegree] = useState(new Degree());
 
-    const updateContact = async (degree: Degree) => {
+    const updateDegree = async (degree: Degree) => {
         try {
             await saveDegree(degree);
             toastSuccess('Updated degree');
@@ -26,7 +26,7 @@ const DegreeDetail:FC<props> = ({ id, toggleModal, setRefresh }) => {
         }
     }
 
-    const fetchContact = async (id: number) => {
+    const fetchDegree = async (id: number) => {
         try {
             const data : Degree = await getDataEntry(id, DatabaseTypes.DEGREE);
             if (data?.name) {
@@ -43,17 +43,7 @@ const DegreeDetail:FC<props> = ({ id, toggleModal, setRefresh }) => {
         }
     };
 
-    const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setDegree({...degree, [event.target.name]: event.target.value});
-    }
-
-    const submitDegree = (event: React.ChangeEvent<HTMLFormElement>) => {
-        event.preventDefault();
-        updateContact(degree);
-        setRefresh(true);
-    }
-    
-    const onDelete = async () => {
+    const confirmAndDeleteDegree = async () => {
         const userConfirmed = window.confirm("Are you sure you want to delete?");
         if (userConfirmed) {
             const responseStatus = await deleteDegree(id, degree);
@@ -71,9 +61,22 @@ const DegreeDetail:FC<props> = ({ id, toggleModal, setRefresh }) => {
         }
         return (<></>);
     };
+
+    // Updates degree state variable each time the user updates a property of the degree
+    const onDegreeFormChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setDegree({...degree, [event.target.name]: event.target.value});
+    }
+
+    // Updates degree when user presses 'Save'.
+    const submitDegree = (event: React.ChangeEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        updateDegree(degree);
+        setRefresh(true);
+    }
     
+
     useEffect(() => {
-        fetchContact(id);
+        fetchDegree(id);
     }, [id]);
 
     return (
@@ -83,12 +86,12 @@ const DegreeDetail:FC<props> = ({ id, toggleModal, setRefresh }) => {
                     <input type="hidden" name="id" defaultValue={degree.id} required />
                     <div className='input-box'>
                         <span className="details">Name</span>
-                        <input type="text" value={degree.name} onChange={onChange} name="name" required/>
+                        <input type="text" value={degree.name} onChange={onDegreeFormChange} name="name" required/>
                     </div>
                 </div>
                 <div className='form_footer'>
                     <button type="submit" className="btn">Save</button>
-                    <button onClick={() => onDelete()} className="btn btn-danger">Delete</button>
+                    <button onClick={() => confirmAndDeleteDegree()} className="btn btn-danger">Delete</button>
                 </div>
             </form>
         </div>

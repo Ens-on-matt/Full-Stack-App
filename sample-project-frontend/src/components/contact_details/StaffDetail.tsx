@@ -20,7 +20,7 @@ const StaffDetail:FC<props> = ({ id, toggleModal, setRefresh }) => {
     const [staff, setStaff] = useState(new Staff());
     const [chosenJob, setChosenJob] = useState<option>();
 
-    const updateContact = async (staff: Staff) => {
+    const updateStaffMember = async (staff: Staff) => {
         try {
             await saveStaff(staff);
             toastSuccess('Updated staff');
@@ -30,7 +30,7 @@ const StaffDetail:FC<props> = ({ id, toggleModal, setRefresh }) => {
         }
     }
 
-    const fetchContact = async (id: number) => {
+    const fetchStaffMember = async (id: number) => {
         try {
             const data : Staff = await getDataEntry(id, DatabaseTypes.STAFF);
             if (data?.name && data?.job) {
@@ -48,17 +48,7 @@ const StaffDetail:FC<props> = ({ id, toggleModal, setRefresh }) => {
         }
     };
 
-    const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setStaff({...staff, [event.target.name]: event.target.value});
-    }
-
-    const submitStaff = (event: React.ChangeEvent<HTMLFormElement>) => {
-        event.preventDefault();
-        updateContact(staff);
-        setRefresh(true);
-    }
-
-    const onDelete = async () => {
+    const confirmAndDeleteStaffMember = async () => {
         const userConfirmed = window.confirm("Are you sure you want to delete?");
         if (userConfirmed) {
             const responseStatus = await deleteStaff(id, staff);
@@ -86,26 +76,39 @@ const StaffDetail:FC<props> = ({ id, toggleModal, setRefresh }) => {
         }
     }
 
+    // Updates staff state variable each time the user updates a property of the staff member
+    const onStaffMemberFormChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setStaff({...staff, [event.target.name]: event.target.value});
+    }
+
+    // Updates staff member when user presses 'Save'.
+    const submitStaffMember = (event: React.ChangeEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        updateStaffMember(staff);
+        setRefresh(true);
+    }
+
+
     useEffect(() => {
-        fetchContact(id);
+        fetchStaffMember(id);
     }, [id]);
 
     return (
         <div className='profile__absolute profile__details' ref={useOutsideClick(() => toggleModal(false))}>
-            <form onSubmit={submitStaff} className="form">
+            <form onSubmit={submitStaffMember} className="form">
                 <div className='user-details'>
                     <input type="hidden" name="id" defaultValue={staff.id} required />
                     <div className='input-box'>
                         <span className="details">Name</span>
-                        <input type="text" value={staff.name} onChange={onChange} name="name" required/>
+                        <input type="text" value={staff.name} onChange={onStaffMemberFormChange} name="name" required/>
                     </div>
                     <div className='input-box'>
                         <span className="details">Email</span>
-                        <input type="text" value={staff.email} onChange={onChange} name="email" required/>
+                        <input type="text" value={staff.email} onChange={onStaffMemberFormChange} name="email" required/>
                     </div>
                     <div className='input-box'>
                         <span className="details">Phone</span>
-                        <input type="text" value={staff.phone_number} onChange={onChange} name="phone_number" required/>
+                        <input type="text" value={staff.phone_number} onChange={onStaffMemberFormChange} name="phone_number" required/>
                     </div>
                     <div className='input-box'>
                         <span className="details">Job</span>
@@ -113,12 +116,12 @@ const StaffDetail:FC<props> = ({ id, toggleModal, setRefresh }) => {
                     </div>
                     <div className='input-box'>
                         <span className="details">Salary</span>
-                        <input type="text" value={staff.salary} onChange={onChange} name="salary" required/>
+                        <input type="text" value={staff.salary} onChange={onStaffMemberFormChange} name="salary" required/>
                     </div>
                 </div>
                 <div className='form_footer'>
                     <button type="submit" className="btn">Save</button>
-                    <button onClick={() => onDelete()} className="btn btn-danger">Delete</button>
+                    <button onClick={() => confirmAndDeleteStaffMember()} className="btn btn-danger">Delete</button>
                 </div>
             </form>
         </div>

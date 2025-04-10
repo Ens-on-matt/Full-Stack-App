@@ -29,8 +29,7 @@ const CourseDetail:FC<props> = ({ id, toggleModal, setRefresh }) => {
     const [selectedDegree, setSelectedDegree] = useState<Degree>();
     const [selectedProfessor, setSelectedProfessor] = useState<Staff>();
 
-
-    const updateContact = async (course: Course) => {
+    const updateCourse = async (course: Course) => {
         try {
             await saveCourse(course);
             toastSuccess('Updated course');
@@ -40,7 +39,7 @@ const CourseDetail:FC<props> = ({ id, toggleModal, setRefresh }) => {
         }
     }
 
-    const fetchContact = async (id: number) => {
+    const fetchCourse = async (id: number) => {
         try {
             const data : Course = await getDataEntry(id, DatabaseTypes.COURSE);
             if (data?.name && data?.degree_id) {
@@ -65,17 +64,7 @@ const CourseDetail:FC<props> = ({ id, toggleModal, setRefresh }) => {
         }
     };
 
-    const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setCourse({...course, [event.target.name]: event.target.value});
-    }
-
-    const submitCourse = (event: React.ChangeEvent<HTMLFormElement>) => {
-        event.preventDefault();
-        updateContact(course);
-        setRefresh(true);
-    }
-
-    const onDelete = async () => {
+    const confirmAndDeleteCourse = async () => {
         const userConfirmed = window.confirm("Are you sure you want to delete?");
         if (userConfirmed) {
             const responseStatus = await deleteCourse(id, course);
@@ -92,6 +81,8 @@ const CourseDetail:FC<props> = ({ id, toggleModal, setRefresh }) => {
         return (<></>);
     };
 
+    // Gets first 10 professors (staff members with job=="professor") if no query, else searches for the 10 closest professors (by name).
+    // The list of professors returned have added properties to allow AsyncSelect to interpret the list (set properties .label and .value).
     const professorOptions = async (inputValue: string) => {
         const response: staffPage = await searchProfessors(inputValue, 10);
         for (const degree of response.list) {
@@ -101,13 +92,8 @@ const CourseDetail:FC<props> = ({ id, toggleModal, setRefresh }) => {
         return response.list;
     }
 
-    const updateStaffID = (selectedProfessor : SingleValue<Staff>) => {
-        if (selectedProfessor?.id) {
-            setSelectedDegree(selectedProfessor);
-            course.professor_id = `${selectedProfessor.id}`
-        }
-    }
-
+    // Gets first 10 degrees if no query, else searches for the 10 closest degrees (by name).
+    // The list of degrees returned have added properties to allow AsyncSelect to interpret the list (set properties .label and .value).
     const degreeOptions = async (inputValue: string) => {
         let response: degreePage;
         if (inputValue == '') {
@@ -122,6 +108,13 @@ const CourseDetail:FC<props> = ({ id, toggleModal, setRefresh }) => {
         return response.list;
     }
 
+    const updateStaffID = (selectedProfessor : SingleValue<Staff>) => {
+        if (selectedProfessor?.id) {
+            setSelectedDegree(selectedProfessor);
+            course.professor_id = `${selectedProfessor.id}`
+        }
+    }
+
     const updateDegreeID = (selectedDegree : SingleValue<Degree>) => {
         if (selectedDegree?.id) {
             setSelectedDegree(selectedDegree);
@@ -129,8 +122,21 @@ const CourseDetail:FC<props> = ({ id, toggleModal, setRefresh }) => {
         }
     }
 
+    // Updates course state variable each time the user updates a property of the course
+    const onCourseFormChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setCourse({...course, [event.target.name]: event.target.value});
+    }
+
+    // Updates course when user presses 'Save'.
+    const submitCourse = (event: React.ChangeEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        updateCourse(course);
+        setRefresh(true);
+    }
+
+    // React Hook to retrieve the course when the id changes.
     useEffect(() => {
-        fetchContact(id);
+        fetchCourse(id);
     }, [id]);
 
     return (
@@ -140,7 +146,7 @@ const CourseDetail:FC<props> = ({ id, toggleModal, setRefresh }) => {
                     <input type="hidden" name="id" defaultValue={course.id} required />
                     <div className='input-box'>
                         <span className="details">Name</span>
-                        <input type="text" value={course.name} onChange={onChange} name="name" required/>
+                        <input type="text" value={course.name} onChange={onCourseFormChange} name="name" required/>
                     </div>
                     <div className='input-box'>
                         <span className="details">Lecturer</span>
@@ -153,7 +159,7 @@ const CourseDetail:FC<props> = ({ id, toggleModal, setRefresh }) => {
                 </div>
                 <div className='form_footer'>
                     <button type="submit" className="btn">Save</button>
-                    <button onClick={() => onDelete()} className="btn btn-danger">Delete</button>
+                    <button onClick={() => confirmAndDeleteCourse()} className="btn btn-danger">Delete</button>
                 </div>
             </form>
         </div>
