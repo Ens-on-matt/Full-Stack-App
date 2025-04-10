@@ -15,9 +15,10 @@ import Course from "../assets/Course.tsx";
 import Enrollment from "../assets/Enrollment.tsx";
 import EnrollmentProgress from "../assets/EnrollmentProgress.tsx";
 import {Button} from "react-bootstrap";
+import INVALID_ID from "../assets/INVALID_ID.tsx";
 
 const StudentEnrollment:FC = () => {
-    const [student, setStudent] = useState(new Student(-1, 'Select Student','','',''));
+    const [student, setStudent] = useState(new Student(INVALID_ID, 'Select Student','','',''));
     const [coursesForDegree, setCoursesForDegree] = useState<Course[]>();
     const [selectedDegree, setSelectedDegree] = useState<Degree>();
     const [enrollments, setEnrollments] = useState<Enrollment[]>([]);
@@ -62,7 +63,7 @@ const StudentEnrollment:FC = () => {
     // (What courses the student is enrolled in, and what courses are required for the degree the student is studying)
     const fetchStudentInfo = async () => {
         try {
-            if (student && student.id != -1) {
+            if (student && student.id != INVALID_ID) {
                 fetchEnrollments(student.id)
                 const degree_id_num = parseInt(student.degree_id)
                 fetchDegree(degree_id_num)
@@ -86,7 +87,7 @@ const StudentEnrollment:FC = () => {
     }
 
     // Gets first 10 students if no query, else searches for the 10 closest students (by name).
-    // Returns a list of students with added properties so AsyncSelect can use the list (.label and .value).
+    // The list of students returned have added properties to allow AsyncSelect to interpret the list (set properties .label and .value).
     const studentOptions = async (inputValue: string) => {
         let response: studentPage;
         if (inputValue == '') {
@@ -146,7 +147,7 @@ const StudentEnrollment:FC = () => {
         }
     }
 
-    // React Hook to get student's enrollments and the names of the relevant courses when student changes
+    // React Hook to update enrollments and course info when student changes
     useEffect(() => {
         fetchStudentInfo();
     }, [student]);
@@ -155,7 +156,7 @@ const StudentEnrollment:FC = () => {
         <main className='main student-enrollment'>
             <div className='form_footer'>
                 <AsyncSelect className='student-enrollment-select' value={student} defaultOptions cacheOptions loadOptions={studentOptions} onChange={updateStudentID} required/>
-                {student.id != -1 && <div className='student-enrollment-ID'>ID<span>{student.id}</span></div>}
+                {student.id != INVALID_ID && <div className='student-enrollment-ID'>ID<span>{student.id}</span></div>}
             </div>
 
             <div className="enrollment-degree">{selectedDegree && `Bachelor of ${selectedDegree.name}`}</div>
