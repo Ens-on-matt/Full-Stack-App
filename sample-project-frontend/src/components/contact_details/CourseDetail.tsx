@@ -110,7 +110,7 @@ const CourseDetail:FC<props> = ({ id, toggleModal, setRefresh }) => {
 
     const updateStaffID = (selectedProfessor : SingleValue<Staff>) => {
         if (selectedProfessor?.id) {
-            setSelectedDegree(selectedProfessor);
+            setSelectedProfessor(selectedProfessor);
             course.professor_id = `${selectedProfessor.id}`
         }
     }
