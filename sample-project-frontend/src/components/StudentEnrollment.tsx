@@ -145,44 +145,43 @@ const StudentEnrollment:FC = () => {
     }
 
     return (
-        <main className='main tall-enrollment'>
+        <main className='main student-enrollment'>
             <div className='form_footer'>
                 <AsyncSelect className='student-enrollment-select' value={student} defaultOptions cacheOptions loadOptions={studentOptions} onChange={updateStudentID} required/>
-                {student.id != -1 && <h2 className='student-enrollment'>ID={student.id}</h2>}
+                {student.id != -1 && <div className='student-enrollment-ID'><span>ID</span><i>{student.id}</i></div>}
             </div>
 
-            <span className="enrollment-table-degree">{selectedDegree && `Bachelor of ${selectedDegree.name}`}</span>
+            <div className="enrollment-degree">{selectedDegree && `Bachelor of ${selectedDegree.name}`}</div>
 
-            <h3 className='enrollment-table-header'>Courses</h3>
+            <span className='enrollment-header'>Courses</span>
             <div className='enrollment-table'>
-                <div className='sub-table'>
-                    <span >TODO</span>
+                <ul className='sub-table'>
+                    <span>TODO</span>
                     { coursesForDegree && coursesForDegree.map((course : Course) => {
                         if (courseInEnrollments(course.id, enrollments) == COURSE_NOT_ENROLLED) {
-                           return (<li className='sub-table-element' key={course.id}>{course.name} <Button className='bi bi-plus-lg' onClick={() => enrollInCourse(student.id, course.id)}/></li>);
+                           return (<li key={course.id}>{course.name}<div className='enrollment-spacing'/><Button className='bi bi-plus-lg enrollment-btn' onClick={() => enrollInCourse(student.id, course.id)}/></li>);
                         }
                     }
                     )}
-                </div>
-                <div className='sub-table'>
+                </ul>
+                <ul className='sub-table'>
                     <span>IN PROGRESS</span>
                     { coursesForDegree && coursesForDegree.map((course : Course) => {
                             if (courseInEnrollments(course.id, enrollments) == COURSE_PARTIAL_COMPLETED) {
-                                return (<li className='sub-table-element' key={course.id}>{course.name} <Button className='bi bi-check-lg' onClick={() => completeEnrolledCourse(student.id, course.id)}/><Button className='btn-danger bi bi-x-lg' onClick={() => dropEnrolledCourse(student.id, course.id)}/></li>);
+                                return (<li key={course.id}>{course.name}<div className='enrollment-spacing'/><Button className='bi bi-check-lg enrollment-btn' onClick={() => completeEnrolledCourse(student.id, course.id)}/><Button className='btn-danger bi bi-x-lg enrollment-btn' onClick={() => dropEnrolledCourse(student.id, course.id)}/></li>);
                             }
                         }
                     )}
-                </div>
-                <div className='sub-table'>
+                </ul>
+                <ul className='sub-table'>
                     <span>COMPLETED</span>
                     { coursesForDegree && coursesForDegree.map((course : Course) => {
                             if (courseInEnrollments(course.id, enrollments) == COURSE_FULLY_COMPLETED) {
-                                return (<li className='sub-table-element' key={course.id}>{course.name} <Button className='btn-danger bi bi-x-lg' onClick={() => removeCompletedCourse(student.id, course.id)}/></li>);
+                                return (<li key={course.id}>{course.name}<div className='enrollment-spacing'/><Button className='btn-danger bi bi-x-lg enrollment-btn' onClick={() => removeCompletedCourse(student.id, course.id)}/></li>);
                             }
                         }
                     )}
-                </div>
-
+                </ul>
             </div>
         </main>
     )

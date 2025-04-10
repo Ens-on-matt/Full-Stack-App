@@ -73,11 +73,11 @@ const CourseReport:FC = () => {
             <AsyncSelect className='course-report-select' value={course} defaultOptions cacheOptions loadOptions={courseOptions} onChange={updateCourseID} required/>
             <div className='report-table'>
                 <div className='report-description'>
-                    <p className='report-entity'>LECTURER: {professor.name}</p>
-                    <p className='report-entity'>DEGREE: {degree.name}</p>
+                    <p className='report-entity'>LECTURER <p className='report-entity-description'>{professor.name}</p></p>
+                    <p className='report-entity'>DEGREE <p className='report-entity-description'>{degree.name}</p></p>
                 </div>
                 <div className='report-sub-table'>
-                    <div className=''><span>STUDENTS</span></div>
+                    <div>STUDENTS</div>
                     {students.map((student) => <ul key={student.id}>{student.name}</ul>)}
                 </div>
             </div>

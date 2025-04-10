@@ -657,80 +657,6 @@ dialog[open] {
 	color: var(--selective-blue-3);
 }
 
-
-/* Student Enrollment Section */
-
-.tall-enrollment {
-	height: 80vh;
-}
-
-.student-enrollment {
-	text-align: center;
-	padding-left: 10%;
-	padding-right: 10%;
-	align-content: center;
-	justify-content: start;
-}
-
-.student-enrollment-form {
-	display: flex;
-	justify-content: start;
-	align-items: center;
-	margin-top: 35px;
-}
-
-.student-enrollment-select {
-	width: 100%;
-	border: 3px solid #000000;
-	font-size: 2rem;
-}
-
-.student-enrollment .span {
-	color: var(--selective-blue);
-	padding: 20px;
-}
-
-.enrollment-table {
-	display: flex;
-	flex-direction: row;
-	border-top: 2px solid var(--black_80);
-}
-
-.enrollment-table-header {
-	margin-top: 10px;
-	margin-bottom: 10px;
-	flex-direction: row
-}
-
-.enrollment-table-degree {
-	font-size: 2rem;
-}
-
-.sub-table {
-	text-align: center;
-	width: 100%;
-	flex-direction: column;
-	align-items: start;
-	border: 2px solid var(--black_80);
-}
-
-.sub-table div {
-	border: 2px solid var(--black_80);
-}
-
-.sub-table span {
-	font-size: 2rem;
-}
-
-.sub-table-element {
-	list-style-type: none;
-	align-items: center;
-	align-content: space-evenly;
-	padding: 4px;
-	border-top: 1px solid var(--black_80);
-}
-
-
 /* ACTION BAR */
 
 .action-bar {
@@ -826,42 +752,37 @@ dialog[open] {
 	padding: 10% 0px 10% 55%;
 	color: white;
 	background-color: var(--spooky-black-2);
+	cursor: pointer;
+	font-size: 2.5rem;
 }
 
 
 /* Course Report */
 
 .course-report {
-	text-align: center;
-	padding-left: 10%;
-	padding-right: 10%;
+	width: 100%;
+	background-color: #ecf1f1;
+	padding: 2rem;
+	border-radius: 2%;
+	min-height: max-content;
 }
 
 .course-report-select {
 	width: 100%;
-	border: 3px solid #000000;
+	border: 1px solid #000000;
 	font-size: 2rem;
-}
-
-.course-report .span {
-	color: var(--selective-blue);
-	padding: 20px;
+	border-radius: 1%;
 }
 
 .report-table {
 	display: flex;
 	flex-direction: row;
-	border-top: 2px solid var(--black_80);
 }
 
 .report-table-header {
 	margin-top: 10px;
 	margin-bottom: 10px;
-	flex-direction: row
-}
-
-.report-table-degree {
-	font-size: 2rem;
+	flex-direction: row;
 }
 
 .report-sub-table {
@@ -873,13 +794,10 @@ dialog[open] {
 }
 
 .report-sub-table div {
-	border-bottom: 2px solid var(--black_80);
-	margin-bottom: 5%;
-}
-
-.report-sub-table span {
 	font-weight: bold;
 	font-size: 2rem;
+	border-bottom: 2px solid var(--black_80);
+	margin-bottom: 5%;
 }
 
 .report-sub-table {
@@ -887,22 +805,150 @@ dialog[open] {
 	align-items: center;
 	align-content: start;
 	padding: 4px;
-	border-top: 1px solid var(--black_80);
+	margin: 5%;
+	border: 2px solid var(--black_30);
+	background-color: white;
+	border-radius: 15px;
 }
 
 .report-description {
 	height: 70vh;
 	width: 100%;
-	padding: 5% 1% 5% 0%;
 	text-align: center;
+	margin: 10px;
 }
 
 .report-entity {
 	text-decoration: none;
 	width: 100%;
 	align-items: center;
-	padding: inherit;
+	padding: 5% 1% 5% 1%;
+	margin-top: 5%;
+	margin-bottom: 5%;
 	text-align: left;
 	font-size: 1.5rem;
-	border: 1px solid var(--black_80);
+}
+
+.report-entity-description {
+	height: 10vh;
+	background-color: white;
+	text-align: center;
+	padding-top: 3vh;
+	border-radius: 3%;
+	border: 1px solid var(--black_30);
+}
+
+
+/* Student Enrollment Section */
+
+.tall-enrollment {
+	height: 80vh;
+}
+
+.student-enrollment {
+	text-align: center;
+	padding-left: 10%;
+	padding-right: 10%;
+	padding-bottom: 5%;
+	align-content: start;
+	justify-content: start;
+	background-color: #ecf1f1;
+	border-radius: 15px;
+}
+
+.student-enrollment-form {
+	display: flex;
+	justify-content: start;
+	align-items: center;
+	margin-top: 35px;
+}
+
+.student-enrollment-select {
+	width: 100%;
+	border: 3px solid var(--black_50);
+	border-radius: 10px;
+	font-size: 2rem;
+}
+
+.student-enrollment-ID {
+	padding: 10px 1% 10px 5%;
+	justify-content: center;
+	text-align: center;
+	align-items: start;
+}
+
+.student-enrollment-ID span {
+	font-size: 2.2rem;
+	padding-right: 10px;
+}
+
+.student-enrollment-ID i {
+	font-size: 2rem;
+	background-color: white;
+	border-radius: 10%;
+	border: 1px solid var(--black_50);
+	padding: 10%;
+}
+
+.student-enrollment .span {
+	color: var(--selective-blue);
+	padding: 20px;
+}
+
+.enrollment-table {
+	display: flex;
+}
+
+.enrollment-header {
+	margin-top: 10px;
+	margin-bottom: 10px;
+	font-size: 2rem;
+}
+
+.enrollment-degree {
+	font-size: 2rem;
+	background-color: white;
+	border: 1px solid var(--black_50);
+	border-radius: 10px;
+	margin: 10px 0 10px 0;
+	min-height: 60px;
+	align-content: center;
+}
+
+.sub-table {
+	text-align: center;
+	width: 100%;
+	flex-direction: column;
+	align-items: start;
+	border: 2px solid var(--black_30);
+	border-radius: 10px;
+	margin: 5px;
+	background-color: white;
+}
+
+.sub-table li {
+	display: flex;
+	flex-direction: row;
+	align-content: end;
+	justify-content: end;
+	align-items: center;
+	border-top: 1px dashed var(--black_80);
+	padding: 5px;
+	text-align: right;
+}
+
+.sub-table span {
+	font-size: 2rem;
+	text-align: center;
+
+}
+
+.enrollment-spacing {
+	width: 10px;
+}
+
+.enrollment-btn {
+	font-size: 1.2rem;
+	border-radius: 0;
+	margin: 1% 0 1% 0;
 }
