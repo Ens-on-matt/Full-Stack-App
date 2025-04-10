@@ -13,6 +13,7 @@ import Enrollment from "../assets/Enrollment.tsx";
 import Staff from "../assets/Staff.tsx";
 import Degree from "../assets/Degree.tsx";
 import EnrollmentProgress from "../assets/EnrollmentProgress.tsx";
+import INVALID_ID from "../assets/INVALID_ID.tsx";
 
 
 const CourseReport:FC = () => {
@@ -21,7 +22,8 @@ const CourseReport:FC = () => {
     const [professor, setProfessor] = useState<Staff>(new Staff());
     const [degree, setDegree] = useState<Degree>(new Degree());
 
-    const fetchProfessor = async () => {
+    /* FETCH FUNCTIONS THAT GET INFORMATION FROM THE DATABASE */
+    const fetchProfessorTeachingCourse = async () => {
         const professor : Staff = await getDataEntry(parseInt(course.professor_id), DatabaseTypes.STAFF);
         if (professor?.id) setProfessor(professor);
     }
@@ -31,7 +33,7 @@ const CourseReport:FC = () => {
         if (degree?.id) setDegree(degree);
     }
         
-    const fetchStudents = async () => {
+    const fetchStudentsInCourse = async () => {
         const courseEnrollments: Enrollment[] = await getEnrollmentsForCourse(course.id);
         if (courseEnrollments.length > 0) {
             const studentsInCourse: Student[] = [];
@@ -45,6 +47,8 @@ const CourseReport:FC = () => {
         }
     }
 
+    // Gets first 10 courses if no query, else searches for the 10 closest courses (by name).
+    // The list of courses returned have added properties to allow AsyncSelect to interpret the list (set properties .label and .value).
     const courseOptions = async (inputValue: string) => {
         let response: coursePage;
         if (inputValue == '') {
@@ -59,15 +63,17 @@ const CourseReport:FC = () => {
         return response.list;
     }
 
+    // Wraps the course state variable with a check that the student returned by the AsyncSelect is valid.
     const updateCourseID = (selectedCourse : SingleValue<Course>) => {
         if (selectedCourse) setCourse(selectedCourse);
     }
 
+    // React Hook to update degree, students and professor when course changes.
     useEffect(() => {
-        if (course.id != -1) {
-            fetchStudents();
-            fetchProfessor();
+        if (course.id != INVALID_ID) {
             fetchDegree();
+            fetchStudentsInCourse();
+            fetchProfessorTeachingCourse();
         }
     }, [course]);
 
