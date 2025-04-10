@@ -25,7 +25,7 @@ interface props {
 }
 
 const CourseDetail:FC<props> = ({ id, toggleModal, setRefresh }) => {
-    const [course, setCourse] = useState(new Course(-1, '','',''));
+    const [course, setCourse] = useState(new Course());
     const [selectedDegree, setSelectedDegree] = useState<Degree>();
     const [selectedProfessor, setSelectedProfessor] = useState<Staff>();
 

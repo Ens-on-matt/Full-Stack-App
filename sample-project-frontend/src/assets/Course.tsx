@@ -1,3 +1,5 @@
+import INVALID_ID from "./INVALID_ID.tsx";
+
 interface CourseInterface {
     id: number;
     name: string;
@@ -10,7 +12,7 @@ export default class Course implements CourseInterface {
     label: string;
     value: string;
 
-    constructor(public id : number = -1,
+    constructor(public id : number = INVALID_ID,
                 public name: string = '',
                 public professor_id: string = '',
                 public degree_id: string = '') {
@@ -23,7 +25,7 @@ export default class Course implements CourseInterface {
     }
 
     resetArgs = () => {
-        this.id = -1;
+        this.id = INVALID_ID;
         this.name = '';
         this.professor_id = '';
         this.degree_id = '';

@@ -17,7 +17,7 @@ interface props {
 
 
 const StaffDetail:FC<props> = ({ id, toggleModal, setRefresh }) => {
-    const [staff, setStaff] = useState(new Staff(-1, '','','','',''));
+    const [staff, setStaff] = useState(new Staff());
     const [chosenJob, setChosenJob] = useState<option>();
 
     const updateContact = async (staff: Staff) => {

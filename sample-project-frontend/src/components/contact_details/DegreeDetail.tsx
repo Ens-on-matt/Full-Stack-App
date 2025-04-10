@@ -14,7 +14,7 @@ interface props {
 }
 
 const DegreeDetail:FC<props> = ({ id, toggleModal, setRefresh }) => {
-    const [degree, setDegree] = useState(new Degree(-1, ''));
+    const [degree, setDegree] = useState(new Degree());
 
     const updateContact = async (degree: Degree) => {
         try {

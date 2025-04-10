@@ -23,7 +23,7 @@ interface props {
 }
 
 const StudentDetail:FC<props> = ({ id, toggleModal, setRefresh }) => {
-    const [student, setStudent] = useState(new Student(-1, '','','',''));
+    const [student, setStudent] = useState(new Student());
     const [selectedDegree, setSelectedDegree] = useState<Degree>();
 
     const updateContact = async (student: Student) => {

@@ -1,3 +1,5 @@
+import INVALID_ID from "./INVALID_ID.tsx";
+
 interface StudentInterface {
     id: number;
     name: string;
@@ -11,7 +13,7 @@ class Student implements StudentInterface {
     label: string;
     value: string;
 
-    constructor(public id : number = -1,
+    constructor(public id : number = INVALID_ID,
                 public name: string = '',
                 public email: string = '',
                 public phone_number: string = '',
@@ -26,7 +28,7 @@ class Student implements StudentInterface {
     }
 
     resetArgs = () => {
-        this.id = -1;
+        this.id = INVALID_ID;
         this.name = '';
         this.email = '';
         this.phone_number = '';
