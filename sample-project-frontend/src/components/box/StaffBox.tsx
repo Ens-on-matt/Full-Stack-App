@@ -7,6 +7,8 @@ interface props {
     toggleModal: (show: boolean) => void;
 }
 
+// Creates an box description of the staff member and its details.
+// toggleModal is used to toggle when the details should be displayed, where showDetails is used to pass up which staff member is to be shown
 const StaffBox:FC<props> = ({ staff, showDetails, toggleModal }  ) => {
 
     // Activates StaffDetail modal and provides the staff member's ID when this box when pressed.

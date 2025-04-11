@@ -1,11 +1,8 @@
 import React, {FC, useEffect, useState} from 'react'
 import {
-    degreePage,
-    deleteCourse,
-    getDataEntry,
-    getPageOfData, searchAndGetPageOfData,
-    searchProfessors,
-    staffPage
+    getDataEntry, deleteCourse,
+    fetchOptionsForAsyncSelect,
+    fetchProfessorOptionsForAsyncSelect
 } from "../../api/UniService.tsx";
 import Course from "../../assets/Course.tsx"
 import {toastError, toastSuccess} from "../../api/ToastService.tsx";
@@ -24,6 +21,7 @@ interface props {
     setRefresh: (value : boolean) => void;
 }
 
+// Creates element and logic to handle displaying and editing the details of a course given its id
 const CourseDetail:FC<props> = ({ id, toggleModal, setRefresh }) => {
     const [course, setCourse] = useState(new Course());
     const [selectedDegree, setSelectedDegree] = useState<Degree>();
@@ -81,31 +79,9 @@ const CourseDetail:FC<props> = ({ id, toggleModal, setRefresh }) => {
         return (<></>);
     };
 
-    // Gets first 10 professors (staff members with job=="professor") if no query, else searches for the 10 closest professors (by name).
-    // The list of professors returned have added properties to allow AsyncSelect to interpret the list (set properties .label and .value).
-    const professorOptions = async (inputValue: string) => {
-        const response: staffPage = await searchProfessors(inputValue, 10);
-        for (const degree of response.list) {
-            degree.label = degree.name;
-            degree.value = `${degree.id}`;
-        }
-        return response.list;
-    }
-
-    // Gets first 10 degrees if no query, else searches for the 10 closest degrees (by name).
-    // The list of degrees returned have added properties to allow AsyncSelect to interpret the list (set properties .label and .value).
-    const degreeOptions = async (inputValue: string) => {
-        let response: degreePage;
-        if (inputValue == '') {
-            response = await getPageOfData(0, 10, DatabaseTypes.DEGREE);
-        } else {
-            response = await searchAndGetPageOfData(inputValue, 10, DatabaseTypes.DEGREE);
-        }
-        for (const degree of response.list) {
-            degree.label = degree.name;
-            degree.value = `${degree.id}`;
-        }
-        return response.list;
+    const degreeOptions = async (query: string) => {
+        const response: Degree[] = await fetchOptionsForAsyncSelect(query, DatabaseTypes.DEGREE);
+        return response;
     }
 
     const updateStaffID = (selectedProfessor : SingleValue<Staff>) => {
@@ -150,7 +126,7 @@ const CourseDetail:FC<props> = ({ id, toggleModal, setRefresh }) => {
                     </div>
                     <div className='input-box'>
                         <span className="details">Lecturer</span>
-                        <AsyncSelect defaultOptions cacheOptions value={selectedProfessor} loadOptions={professorOptions} onChange={updateStaffID} required/>
+                        <AsyncSelect defaultOptions cacheOptions value={selectedProfessor} loadOptions={fetchProfessorOptionsForAsyncSelect} onChange={updateStaffID} required/>
                     </div>
                     <div className='input-box'>
                         <span className="details">Degree</span>

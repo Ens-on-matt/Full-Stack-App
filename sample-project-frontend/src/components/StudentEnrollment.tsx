@@ -17,6 +17,7 @@ import EnrollmentProgress from "../assets/EnrollmentProgress.tsx";
 import {Button} from "react-bootstrap";
 import INVALID_ID from "../assets/INVALID_ID.tsx";
 
+// Creates a element that displays and lets users edit the courses that a student is enrolled in and their progress.
 const StudentEnrollment:FC = () => {
     const [student, setStudent] = useState(new Student(INVALID_ID, 'Select Student','','',''));
     const [coursesForDegree, setCoursesForDegree] = useState<Course[]>();

@@ -11,10 +11,11 @@ interface props {
     setRefresh: (refresh: boolean) => void;
 }
 
+// Creates element and logic to handle creating a new staff member
 const NewStaff:FC<props> = ({toggleModal, setRefresh}) => {
     const [newStaff, setNewStaff] = useState(new Staff());
 
-    const handleNewStaff = async (event: React.ChangeEvent<HTMLFormElement>) => {
+    const saveNewStaff = async (event: React.ChangeEvent<HTMLFormElement>) => {
         event.preventDefault();
         try {
             const { id } = await saveStaff(newStaff);
@@ -28,7 +29,7 @@ const NewStaff:FC<props> = ({toggleModal, setRefresh}) => {
         }
     }
 
-    const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const onStaffMemberFormChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setNewStaff({...newStaff, [event.target.name]: event.target.value});
     }
 
@@ -39,14 +40,14 @@ const NewStaff:FC<props> = ({toggleModal, setRefresh}) => {
             <i onClick={() => toggleModal(false)} className="bi-x-lg"></i>
         </div>
         <div className="divider"></div>
-        <form onSubmit={handleNewStaff}>
+        <form onSubmit={saveNewStaff}>
             <div className="input-box">
                 <span className="details">Name</span>
-                <input type="text" value={newStaff.name} onChange={onChange} name='name' required/>
+                <input type="text" value={newStaff.name} onChange={onStaffMemberFormChange} name='name' required/>
             </div>
             <div className="input-box">
                 <span className="details">Email</span>
-                <input type="text" value={newStaff.email} onChange={onChange} name='email' required/>
+                <input type="text" value={newStaff.email} onChange={onStaffMemberFormChange} name='email' required/>
             </div>
             <div className="input-box">
                 <span className="details">Job</span>
@@ -54,11 +55,11 @@ const NewStaff:FC<props> = ({toggleModal, setRefresh}) => {
             </div>
             <div className="input-box">
                 <span className="details">Phone Number</span>
-                <input type="text" value={newStaff.phone_number} onChange={onChange} name='phone_number' required/>
+                <input type="text" value={newStaff.phone_number} onChange={onStaffMemberFormChange} name='phone_number' required/>
             </div>
             <div className="input-box">
                 <span className="details">Salary</span>
-                <input type="text" onKeyDown={phoneNumTextOnKeydown} value={newStaff.salary} onChange={onChange} name='salary' required/>
+                <input type="text" onKeyDown={phoneNumTextOnKeydown} value={newStaff.salary} onChange={onStaffMemberFormChange} name='salary' required/>
             </div>
             <div className="form_footer">
                 <button onClick={() => toggleModal(false)} type='button' className="btn btn-danger">Cancel</button>

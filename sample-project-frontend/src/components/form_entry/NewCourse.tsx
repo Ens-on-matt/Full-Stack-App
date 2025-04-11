@@ -2,11 +2,8 @@ import React, {FC, useState} from "react";
 import Course from "../../assets/Course.tsx";
 import {useOutsideClick} from "./FormHelperFunctions.tsx";
 import {
-    degreePage,
-    getPageOfData,
-    saveCourse,
-    searchAndGetPageOfData,
-    searchProfessors, staffPage
+    saveCourse, fetchOptionsForAsyncSelect,
+    fetchProfessorOptionsForAsyncSelect,
 } from "../../api/UniService.tsx";
 import {toastError, toastSuccess} from "../../api/ToastService.tsx";
 import DatabaseTypes from "../../assets/DatabaseTypes.tsx";
@@ -20,10 +17,11 @@ interface props {
     setRefresh: (refresh: boolean) => void;
 }
 
+// Creates element and logic to handle creating a new course
 const NewCourse:FC<props> = ({toggleModal, setRefresh}) => {
     const [newCourse, setNewCourse] = useState(new Course());
 
-    const handleNewCourse = async (event: React.ChangeEvent<HTMLFormElement>) => {
+    const saveNewCourse = async (event: React.ChangeEvent<HTMLFormElement>) => {
         event.preventDefault();
         try {
             const { id } = await saveCourse(newCourse);
@@ -37,31 +35,13 @@ const NewCourse:FC<props> = ({toggleModal, setRefresh}) => {
         }
     }
 
-    const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const degreeOptions = async (query: string) => {
+        const response: Degree[] = await fetchOptionsForAsyncSelect(query, DatabaseTypes.DEGREE);
+        return response;
+    }
+
+    const onCourseFormChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setNewCourse({...newCourse, [event.target.name]: event.target.value});
-    }
-
-    const professorOptions = async (inputValue: string) => {
-        const response: staffPage = await searchProfessors(inputValue, 10);
-        for (const degree of response.list) {
-            degree.label = degree.name;
-            degree.value = `${degree.id}`;
-        }
-        return response.list;
-    }
-
-    const degreeOptions = async (inputValue: string) => {
-        let response: degreePage;
-        if (inputValue == '') {
-            response = await getPageOfData(0, 10, DatabaseTypes.DEGREE);
-        } else {
-            response = await searchAndGetPageOfData(inputValue, 10, DatabaseTypes.DEGREE);
-        }
-        for (const degree of response.list) {
-            degree.label = degree.name;
-            degree.value = `${degree.id}`;
-        }
-        return response.list;
     }
 
     return (
@@ -71,14 +51,14 @@ const NewCourse:FC<props> = ({toggleModal, setRefresh}) => {
             <i onClick={() => toggleModal(false)} className="bi-x-lg"></i>
         </div>
         <div className="divider"></div>
-        <form onSubmit={handleNewCourse}>
+        <form onSubmit={saveNewCourse}>
             <div className="input-box">
                 <span className="details">Name</span>
-                <input type="text" value={newCourse.name} onChange={onChange} name='name' required/>
+                <input type="text" value={newCourse.name} onChange={onCourseFormChange} name='name' required/>
             </div>
             <div className="input-box">
                 <span className="details">Lecturer</span>
-                <AsyncSelect defaultOptions cacheOptions loadOptions={professorOptions} onChange={(selectedProfessor : SingleValue<Staff>) => {if (selectedProfessor?.id) newCourse.professor_id = `${selectedProfessor.id}`}} required/>
+                <AsyncSelect defaultOptions cacheOptions loadOptions={fetchProfessorOptionsForAsyncSelect} onChange={(selectedProfessor : SingleValue<Staff>) => {if (selectedProfessor?.id) newCourse.professor_id = `${selectedProfessor.id}`}} required/>
             </div>
             <div className="input-box">
                 <span className="details">Degree</span>

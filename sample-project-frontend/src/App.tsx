@@ -6,11 +6,11 @@ import {ToastContainer} from "react-toastify";
 import DatabaseTypes from "./assets/DatabaseTypes.tsx";
 import LandingPage from "./components/LandingPage.tsx";
 import StaffList from "./components/tables/StaffList.tsx";
-import NewStaff from "./components/form_entry/NewStaff.tsx";
 import StudentList from "./components/tables/StudentList.tsx";
 import CourseList from "./components/tables/CourseList.tsx";
 import DegreeList from "./components/tables/DegreeList.tsx";
 import BlankForm from "./components/form_entry/BlankForm.tsx";
+import NewStaff from "./components/form_entry/NewStaff.tsx";
 import NewStudent from "./components/form_entry/NewStudent.tsx";
 import NewCourse from "./components/form_entry/NewCourse.tsx";
 import NewDegree from "./components/form_entry/NewDegree.tsx";
@@ -20,16 +20,17 @@ import CourseReport from "./components/CourseReport.tsx";
 
 function App() {
   const newEntryModal = useRef<HTMLDialogElement>(null);
-  const pageSize = 12;
-  const [refresh, setRefresh] = useState(false);
+  const pageSize = 12; // number of items in a page
+  const [refresh, setRefresh] = useState(false); // used by New____ element to inform ____List element to reload list
   const [searchTerm, setSearchTerm] = useState("");
 
+  // toggles form element on or off
   const toggleFormModal = (show: boolean): void => show ? newEntryModal.current?.showModal() : newEntryModal.current?.close();
 
   useEffect(() => {
     setRefresh(false);
   }, [refresh]);
-//          <Route path='*' element={<Navigate to={'/'}/>} />
+
   return (
     <div>
       <Routes>
@@ -40,7 +41,8 @@ function App() {
         <Route path='/degree' element={<Header toggleModal={toggleFormModal} submitSearchTerm={setSearchTerm} database={DatabaseTypes.DEGREE}/>} />
       </Routes>
 
-      <ActionBar />
+      <ActionBar/>
+      <ToastContainer/>
 
       <main className='main'>
       <div className='container'>
@@ -55,7 +57,7 @@ function App() {
           <Route path='/course-report' element={<CourseReport />} />
         </Routes>
       </div>
-    </main>
+      </main>
 
       <dialog ref={newEntryModal} className="modal" id="formModal">
         <Routes>
@@ -66,7 +68,6 @@ function App() {
           <Route path='/degree' element={<NewDegree toggleModal={toggleFormModal} setRefresh={setRefresh}/>} />
         </Routes>
       </dialog>
-      <ToastContainer/>
     </div>
   )
 }

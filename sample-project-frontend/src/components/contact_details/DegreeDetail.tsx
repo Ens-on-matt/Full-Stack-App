@@ -1,5 +1,5 @@
 import React, {FC, useEffect, useState} from 'react'
-import {deleteDegree, getDataEntry} from "../../api/UniService.tsx";
+import {getDataEntry, deleteDegree} from "../../api/UniService.tsx";
 import Degree from "../../assets/Degree.tsx"
 import {toastError, toastSuccess} from "../../api/ToastService.tsx";
 import {saveDegree} from "../../api/UniService.tsx";
@@ -13,6 +13,7 @@ interface props {
     setRefresh: (value : boolean) => void;
 }
 
+// Creates element and logic to handle displaying and editing the details of a degree given its id
 const DegreeDetail:FC<props> = ({ id, toggleModal, setRefresh }) => {
     const [degree, setDegree] = useState(new Degree());
 

@@ -1,10 +1,7 @@
 import React, {FC, useEffect, useState} from 'react'
 import {
-    degreePage,
-    deleteStudent,
-    getDataEntry,
-    getPageOfData,
-    searchAndGetPageOfData
+    getDataEntry, deleteStudent,
+    fetchOptionsForAsyncSelect
 } from "../../api/UniService.tsx";
 import Student from "../../assets/Student.tsx"
 import {toastError, toastSuccess} from "../../api/ToastService.tsx";
@@ -22,6 +19,7 @@ interface props {
     setRefresh: (value : boolean) => void;
 }
 
+// Creates element and logic to handle displaying and editing the details of a student given its id
 const StudentDetail:FC<props> = ({ id, toggleModal, setRefresh }) => {
     const [student, setStudent] = useState(new Student());
     const [selectedDegree, setSelectedDegree] = useState<Degree>();
@@ -73,18 +71,9 @@ const StudentDetail:FC<props> = ({ id, toggleModal, setRefresh }) => {
         return (<></>);
     };
 
-    const degreeOptions = async (inputValue: string) => {
-        let response: degreePage;
-        if (inputValue == '') {
-            response = await getPageOfData(0, 10, DatabaseTypes.DEGREE);
-        } else {
-            response = await searchAndGetPageOfData(inputValue, 10, DatabaseTypes.DEGREE);
-        }
-        for (const degree of response.list) {
-            degree.label = degree.name;
-            degree.value = `${degree.id}`;
-        }
-        return response.list;
+    const degreeOptions = async (query: string) => {
+        const response: Degree[] = await fetchOptionsForAsyncSelect(query, DatabaseTypes.DEGREE);
+        return response;
     }
 
     const updateDegreeID = (selectedDegree : SingleValue<Degree>) => {

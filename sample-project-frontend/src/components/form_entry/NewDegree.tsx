@@ -9,10 +9,11 @@ interface props {
     setRefresh: (refresh: boolean) => void;
 }
 
+// Creates element and logic to handle creating a new degree
 const NewDegree:FC<props> = ({toggleModal, setRefresh}) => {
     const [newDegree, setNewDegree] = useState(new Degree());
 
-    const handleNewDegree = async (event: React.ChangeEvent<HTMLFormElement>) => {
+    const saveNewDegree = async (event: React.ChangeEvent<HTMLFormElement>) => {
         event.preventDefault();
         try {
             const { id } = await saveDegree(newDegree);
@@ -26,7 +27,7 @@ const NewDegree:FC<props> = ({toggleModal, setRefresh}) => {
         }
     }
 
-    const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const onDegreeFormChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setNewDegree({...newDegree, [event.target.name]: event.target.value});
     }
 
@@ -37,10 +38,10 @@ const NewDegree:FC<props> = ({toggleModal, setRefresh}) => {
             <i onClick={() => toggleModal(false)} className="bi-x-lg"></i>
         </div>
         <div className="divider"></div>
-        <form onSubmit={handleNewDegree}>
+        <form onSubmit={saveNewDegree}>
             <div className="input-box">
                 <span className="details">Name</span>
-                <input type="text" value={newDegree.name} onChange={onChange} name='name' required/>
+                <input type="text" value={newDegree.name} onChange={onDegreeFormChange} name='name' required/>
             </div>
             <div className="form_footer">
                 <button onClick={() => toggleModal(false)} type='button' className="btn btn-danger">Cancel</button>

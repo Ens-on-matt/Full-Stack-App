@@ -1,7 +1,7 @@
 import {FC} from "react";
 import {Link} from "react-router-dom";
 
-
+// Simple landing page to introduce users to the application
 const LandingPage:FC = () => {
     return (
         <main className='main'>

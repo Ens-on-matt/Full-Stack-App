@@ -14,6 +14,7 @@ interface props {
     setRefresh: (value : boolean) => void,
 }
 
+// Creates element and logic to handle retrieving, displaying and updating a list of degrees
 const DegreeList:FC<props> = ({ pageSize, searchTerm, refresh, setRefresh }) => {
     const [totalPages, setTotalPages] = useState(0);
     const [degreeList, setDegreeList] = useState<Degree[]>();

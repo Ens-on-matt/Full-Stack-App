@@ -1,6 +1,7 @@
 import {useState} from "react";
 import {Link} from "react-router-dom";
 
+// Creates the navigation bar on the left for users to navigate to addition specific pages
 const ActionBar = () => {
     const [isOpen, setIsOpen] = useState(true);
     const toggleActionBar = () => setIsOpen(!isOpen);

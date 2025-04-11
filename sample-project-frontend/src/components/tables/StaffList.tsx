@@ -14,6 +14,7 @@ interface props {
     setRefresh: (value : boolean) => void,
 }
 
+// Creates element and logic to handle retrieving, displaying and updating a list of staff
 const StaffList:FC<props> = ({ pageSize, searchTerm, refresh, setRefresh }) => {
     const [totalPages, setTotalPages] = useState(0);
     const [staffList, setStaffList] = useState<Staff[]>();

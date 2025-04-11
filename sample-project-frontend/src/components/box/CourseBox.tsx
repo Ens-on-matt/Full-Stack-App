@@ -11,6 +11,9 @@ interface props {
     toggleModal: (show: boolean) => void;
 }
 
+// Creates an box description of the courses and its details, replacing numerical database ids for their corresponding names for clarity.
+// Lists for professors and degrees is used to find the name corresponding to the professor_id and degree_id of the course provided
+// toggleModal is used to toggle when the details should be displayed, where showDetails is used to pass up which course is to be shown
 const CourseBox:FC<props> = ({ course, professors, degrees, showDetails, toggleModal }  ) => {
 
     // Activates CourseDetail modal and provides the course's ID when this box when pressed.

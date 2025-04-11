@@ -9,8 +9,11 @@ interface props {
     toggleModal: (show: boolean) => void;
 }
 
+// Creates an box description of the students and its details, replacing numerical database ids for their corresponding names for clarity.
+// Lists for degrees is used to find the name corresponding to the degree_id of the student provided
+// toggleModal is used to toggle when the details should be displayed, where showDetails is used to pass up which student is to be shown
 const StudentBox:FC<props> = ({ student, degrees, showDetails, toggleModal }  ) => {
-
+    
     // Activates StudentDetail modal and provides the student's ID when this box when pressed.
     const handleOnClick = () => {
         showDetails(student.id)

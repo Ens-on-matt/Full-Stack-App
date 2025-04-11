@@ -15,7 +15,7 @@ import Degree from "../assets/Degree.tsx";
 import EnrollmentProgress from "../assets/EnrollmentProgress.tsx";
 import INVALID_ID from "../assets/INVALID_ID.tsx";
 
-
+// Creates an element that displays the course report of a given course (course, degree, professors and all enrolled students)
 const CourseReport:FC = () => {
     const [course, setCourse] = useState<Course>(new Course(-1, 'Select Course'));
     const [students, setStudents] = useState<Student[]>([]);

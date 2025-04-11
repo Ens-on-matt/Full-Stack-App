@@ -7,6 +7,8 @@ interface props {
     toggleModal: (show: boolean) => void;
 }
 
+// Creates an box description of the degrees and its details.
+// toggleModal is used to toggle when the details should be displayed, where showDetails is used to pass up which degree is to be shown
 const DegreeBox:FC<props> = ({ degree, showDetails, toggleModal }  ) => {
 
     // Activates DegreeDetail modal and provides the degree's ID when this box when pressed.

@@ -1,5 +1,6 @@
 import {useEffect, useRef} from "react";
 
+// Only lets keyboard event occur if the character pressed is either: 0 - 9, backspace, delete, control, tab, arrow left or arrow right
 export const numberTextOnKeydown = (event : React.KeyboardEvent<HTMLInputElement>) => {
     // Regex expression adapted from https://stackoverflow.com/questions/43687964/only-numbers-input-number-in-react
     // Regex checks if number not: a digit OR 'Backspace' OR 'Delete' OR ...
@@ -8,6 +9,7 @@ export const numberTextOnKeydown = (event : React.KeyboardEvent<HTMLInputElement
     }
 }
 
+// Only lets keyboard event occur if the character pressed is either: 0 - 9, round brackets, whitespace, backspace, delete, control, tab, arrow left or arrow right
 export const phoneNumTextOnKeydown = (event : React.KeyboardEvent<HTMLInputElement>) => {
     // Regex expression adapted from https://stackoverflow.com/questions/43687964/only-numbers-input-number-in-react
     // Like numberTextOnKeydown above, but also allows round brackets and whitespace ('(', ')', ' ')
@@ -16,6 +18,7 @@ export const phoneNumTextOnKeydown = (event : React.KeyboardEvent<HTMLInputEleme
     }
 }
 
+// Allows for a function "callback" to be called when the mouse clicks outside of the referenced element.
 export const useOutsideClick = (callback: () => void) => {
     const ref = useRef<HTMLDivElement>(null);
 

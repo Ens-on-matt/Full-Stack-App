@@ -2,9 +2,9 @@ import {FC, useEffect, useRef, useState} from 'react'
 import {
     coursePage,
     getAllData,
-    getAllProfessors, getAllProfessorsInStaff,
+    getAllProfessors,
     getPageOfData,
-    searchAndGetPageOfData, staffPage
+    searchAndGetPageOfData,
 } from "../../api/UniService.tsx";
 import {toastError, toastSuccess} from "../../api/ToastService.tsx";
 import DatabaseTypes from "../../assets/DatabaseTypes.tsx";
@@ -22,6 +22,7 @@ interface props {
     setRefresh: (value : boolean) => void,
 }
 
+// Creates element and logic to handle retrieving, displaying and updating a list of courses
 const CourseList:FC<props> = ({ pageSize, searchTerm, refresh, setRefresh }) => {
     const [totalPages, setTotalPages] = useState(0);
     const [courseList, setCourseList] = useState<Course[]>();
@@ -78,7 +79,7 @@ const CourseList:FC<props> = ({ pageSize, searchTerm, refresh, setRefresh }) => 
 
     const createProfessorDictionary = async () => {
         const response:Staff[] = await getAllProfessors();
-        const professorDict: object = {}
+        const professorDict = {} // Treat as dictionary where professorDict[key] = value
         for (const prof of response) {
             professorDict[prof.id] = prof;
         }

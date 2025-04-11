@@ -8,6 +8,8 @@ interface props {
     database: string;
 }
 
+// Creates the header at the top of the page to let users navigate between staff, students, courses, degrees
+// alongside elements to let users use additional functionality like search
 const Header:FC<props> = ( {toggleModal, submitSearchTerm, database}) => {
     const [searchTerm, setSearchTerm] = useState('');
 

@@ -1,5 +1,5 @@
 import React, {FC, useEffect, useState} from 'react'
-import {deleteStaff, getDataEntry} from "../../api/UniService.tsx";
+import {getDataEntry, deleteStaff} from "../../api/UniService.tsx";
 import Staff from "../../assets/Staff.tsx"
 import {toastError, toastSuccess} from "../../api/ToastService.tsx";
 import {saveStaff} from "../../api/UniService.tsx";
@@ -15,7 +15,7 @@ interface props {
     setRefresh: (value : boolean) => void;
 }
 
-
+// Creates element and logic to handle displaying and editing the details of a staff member given its id
 const StaffDetail:FC<props> = ({ id, toggleModal, setRefresh }) => {
     const [staff, setStaff] = useState(new Staff());
     const [chosenJob, setChosenJob] = useState<option>();
