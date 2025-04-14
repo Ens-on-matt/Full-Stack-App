@@ -165,7 +165,7 @@ public class EnrollmentRepository {
     }
 
     public Optional<Enrollment> updateEnrollmentStatus(Enrollment enrollment) {
-        log.info("Repository updateEnrollmentMember called");
+        log.info("Repository updateEnrollmentStatus called");
 
         MapSqlParameterSource parameters = new MapSqlParameterSource();
         String sql = """

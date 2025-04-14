@@ -1,6 +1,5 @@
 package com.example.sample_project.repository;
 
-import com.example.sample_project.model.Course;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 
@@ -132,8 +131,8 @@ public class DegreeRepository {
         return Optional.of(namedJdbcTemplateObject.query(sql, parameters, getIDRowMapper()).get(0));
     }
 
-    public Optional<Degree> updateDegreeMember(Degree degree) {
-        log.info("Repository updateDegreeMember called");
+    public Optional<Degree> updateDegree(Degree degree) {
+        log.info("Repository updateDegree called");
 
         MapSqlParameterSource parameters = new MapSqlParameterSource();
         String sql = """

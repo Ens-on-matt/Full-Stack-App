@@ -1,39 +1,23 @@
 package com.example.sample_project.controller;
 
-import com.example.sample_project.model.Degree;
-import com.example.sample_project.model.Staff;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
-import org.apache.commons.text.similarity.JaroWinklerSimilarity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.context.properties.bind.Name;
-import org.springframework.data.repository.query.ResultProcessor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import com.example.sample_project.model.Student;
 import com.example.sample_project.repository.StudentRepository;
 
-import java.time.LocalDate;
-import java.time.ZonedDateTime;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
-import static com.example.sample_project.controller.Response.internalServer500;
 import static com.example.sample_project.controller.Response.notFound404;
-import static java.lang.Math.min;
 
 //@Validated
 @RequiredArgsConstructor
@@ -85,7 +69,7 @@ public class StudentController {
                                                            @PathVariable Integer pageSize) {
         LOGGER.info("Controller listStudentPage called");
 
-        List<Student> StudentList = studentRepository.getPageOfStudent(pageNo, pageSize, 0);
+        List<Student> StudentList = studentRepository.getPageOfStudents(pageNo, pageSize, 0);
         int totalPages = studentRepository.getSizeOfStudentTable();
         StudentPageDTO pageResponse = new StudentPageDTO(StudentList, totalPages);
 
@@ -98,7 +82,7 @@ public class StudentController {
     public ResponseEntity<ResponseObject> searchStudentMembers (@PathVariable String searchTerm,
                                                                @PathVariable Integer pageSize) {
         LOGGER.info("Controller searchStudentMembers called");
-        List<Student> studentList = studentRepository.searchStudentMembers(searchTerm, pageSize);
+        List<Student> studentList = studentRepository.searchStudents(searchTerm, pageSize);
         StudentPageDTO response = new StudentPageDTO(studentList, 1);
         return ResponseEntity
                 .status(HttpStatus.OK)
@@ -135,7 +119,7 @@ public class StudentController {
     public ResponseEntity<ResponseObject> updateStudentMember (Student student) {
         LOGGER.info("Controller updateStudentMember called");
 
-        Optional<Student> studentOpt = studentRepository.updateStudentMember(student);
+        Optional<Student> studentOpt = studentRepository.updateStudent(student);
 
         if (studentOpt.isPresent()) {
             return ResponseEntity

@@ -9,9 +9,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import static com.example.sample_project.controller.Response.internalServer500;
 import static com.example.sample_project.controller.Response.notFound404;
-import static java.lang.Math.min;
 
 import com.example.sample_project.model.Staff;
 import com.example.sample_project.repository.StaffRepository;
@@ -19,8 +17,6 @@ import com.example.sample_project.repository.StaffRepository;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.text.similarity.FuzzyScore;
-import org.apache.commons.text.similarity.JaroWinklerSimilarity;
 
 //@Validated
 @RequiredArgsConstructor

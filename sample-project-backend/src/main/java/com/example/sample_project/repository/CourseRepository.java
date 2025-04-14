@@ -1,6 +1,5 @@
 package com.example.sample_project.repository;
 
-import com.example.sample_project.model.Student;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 
@@ -17,7 +16,6 @@ import org.springframework.stereotype.Repository;
 
 import com.example.sample_project.model.Course;
 
-import static com.example.sample_project.repository.GenericRowMappers.getIDRowMapper;
 import static com.example.sample_project.repository.GenericRowMappers.getTableCountRowMapper;
 
 @Slf4j
@@ -135,8 +133,8 @@ public class CourseRepository {
         return Optional.of(namedJdbcTemplateObject.query(sql, parameters, GenericRowMappers.getIDRowMapper()).get(0));
     }
 
-    public Optional<Course> updateCourseMember(Course course) {
-        log.info("Repository updateCourseMember called");
+    public Optional<Course> updateCourse(Course course) {
+        log.info("Repository updateCourse called");
 
         MapSqlParameterSource parameters = new MapSqlParameterSource();
         String sql = """

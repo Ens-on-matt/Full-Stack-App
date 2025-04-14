@@ -1,6 +1,5 @@
 package com.example.sample_project.repository;
 
-import com.example.sample_project.model.Staff;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 
@@ -17,7 +16,6 @@ import org.springframework.stereotype.Repository;
 
 import com.example.sample_project.model.Student;
 
-import static com.example.sample_project.repository.GenericRowMappers.getIDRowMapper;
 import static com.example.sample_project.repository.GenericRowMappers.getTableCountRowMapper;
 
 @Slf4j
@@ -46,7 +44,7 @@ public class StudentRepository {
 
         log.debug("Query {}", sql);
 
-        return getStudentMembers(sql, parameters, getStudentRowMapper());
+        return getStudents(sql, parameters, getStudentRowMapper());
     }
 
     public Optional<Student> getStudentById(@NonNull Integer id) {
@@ -67,10 +65,10 @@ public class StudentRepository {
 
         parameters.addValue("student_id", id);
 
-        return Optional.of(getStudentMembers(sql, parameters, getStudentRowMapper()).get(0));
+        return Optional.of(getStudents(sql, parameters, getStudentRowMapper()).get(0));
     }
 
-    public List<Student> getPageOfStudent(@NonNull Integer PageNo, @NonNull Integer PageSize, @NonNull Integer Offset) {
+    public List<Student> getPageOfStudents(@NonNull Integer PageNo, @NonNull Integer PageSize, @NonNull Integer Offset) {
         MapSqlParameterSource parameters = new MapSqlParameterSource();
         String sql = """
             SELECT 
@@ -89,10 +87,10 @@ public class StudentRepository {
         parameters.addValue("EntryOffset", PageNo*PageSize + Offset);
         parameters.addValue("PageSize", PageSize);
 
-        return getStudentMembers(sql, parameters, getStudentRowMapper());
+        return getStudents(sql, parameters, getStudentRowMapper());
     }
 
-    public List<Student> searchStudentMembers (@NonNull String searchTerm, @NonNull Integer PageSize) {
+    public List<Student> searchStudents(@NonNull String searchTerm, @NonNull Integer PageSize) {
         MapSqlParameterSource parameters = new MapSqlParameterSource();
         String sql = """                
             SELECT 
@@ -109,7 +107,7 @@ public class StudentRepository {
 
         parameters.addValue("searchTerm", searchTerm);
         parameters.addValue("PageSize", PageSize);
-        return getStudentMembers(sql, parameters, getStudentRowMapper());
+        return getStudents(sql, parameters, getStudentRowMapper());
     }
 
     public Integer getSizeOfStudentTable() {
@@ -152,7 +150,7 @@ public class StudentRepository {
         return Optional.of(namedJdbcTemplateObject.query(sql, parameters, GenericRowMappers.getIDRowMapper()).get(0));
     }
 
-    public Optional<Student> updateStudentMember(Student student) {
+    public Optional<Student> updateStudent(Student student) {
         log.info("Repository updateStudentMember called");
 
         MapSqlParameterSource parameters = new MapSqlParameterSource();
@@ -174,7 +172,7 @@ public class StudentRepository {
         parameters.addValue("phone_number", student.getPhone_number());
         parameters.addValue("degree_id", student.getDegree_id());
 
-        return Optional.of(getStudentMembers(sql, parameters, getStudentRowMapper()).get(0));
+        return Optional.of(getStudents(sql, parameters, getStudentRowMapper()).get(0));
     }
 
     public Boolean deleteStudent(Integer id) {
@@ -199,7 +197,7 @@ public class StudentRepository {
     }
 
 
-    private List<Student> getStudentMembers(String sql, MapSqlParameterSource parameters, RowMapper<Student> rowMapper) {
+    private List<Student> getStudents(String sql, MapSqlParameterSource parameters, RowMapper<Student> rowMapper) {
         NamedParameterJdbcTemplate namedJdbcTemplateObject = new NamedParameterJdbcTemplate(jdbcOperations);
         return namedJdbcTemplateObject.query(
                 sql,

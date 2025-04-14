@@ -1,39 +1,23 @@
 package com.example.sample_project.controller;
 
-import com.example.sample_project.model.Course;
-import com.example.sample_project.model.Student;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
-import org.apache.commons.text.similarity.JaroWinklerSimilarity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.context.properties.bind.Name;
-import org.springframework.data.repository.query.ResultProcessor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import com.example.sample_project.model.Degree;
 import com.example.sample_project.repository.DegreeRepository;
 
-import java.time.LocalDate;
-import java.time.ZonedDateTime;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
-import static com.example.sample_project.controller.Response.internalServer500;
 import static com.example.sample_project.controller.Response.notFound404;
-import static java.lang.Math.min;
 
 //@Validated
 @RequiredArgsConstructor
@@ -135,7 +119,7 @@ public class DegreeController {
     public ResponseEntity<ResponseObject> updateDegree (Degree degree) {
         LOGGER.info("Controller updateDegree called");
 
-        Optional<Degree> degreeOpt = degreeRepository.updateDegreeMember(degree);
+        Optional<Degree> degreeOpt = degreeRepository.updateDegree(degree);
 
         if (degreeOpt.isPresent()) {
             return ResponseEntity
