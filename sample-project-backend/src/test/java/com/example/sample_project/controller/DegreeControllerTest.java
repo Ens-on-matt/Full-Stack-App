@@ -1,5 +1,6 @@
 package com.example.sample_project.controller;
 
+import com.example.sample_project.matchers.DegreeMatcher;
 import com.example.sample_project.model.Staff;
 import com.example.sample_project.model.Student;
 import lombok.Builder;
@@ -271,7 +272,7 @@ public class DegreeControllerTest {
                 }
                 """;
 
-        DegreeControllerTest.DegreeMatcher degreePropertyMatcher = DegreeControllerTest.DegreeMatcher.builder().left(newDegree).build();
+        DegreeMatcher degreePropertyMatcher = DegreeMatcher.builder().left(newDegree).build();
 
         // When
         when(degreeRepository.updateDegree(argThat(degreePropertyMatcher)))
@@ -305,7 +306,7 @@ public class DegreeControllerTest {
                 }
                 """;
 
-        DegreeControllerTest.DegreeMatcher degreePropertyMatcher = DegreeControllerTest.DegreeMatcher.builder().left(newDegree).build();
+        DegreeMatcher degreePropertyMatcher = DegreeMatcher.builder().left(newDegree).build();
 
         // When
         when(degreeRepository.updateDegree(argThat(degreePropertyMatcher)))
@@ -337,7 +338,7 @@ public class DegreeControllerTest {
                 }
                 """;
 
-        DegreeControllerTest.DegreeMatcher degreePropertyMatcher = DegreeControllerTest.DegreeMatcher.builder().left(newDegree).build();
+        DegreeMatcher degreePropertyMatcher = DegreeMatcher.builder().left(newDegree).build();
 
         // When
         when(degreeRepository.updateDegree(argThat(degreePropertyMatcher)))
@@ -412,18 +413,5 @@ public class DegreeControllerTest {
         return degreeList;
     }
 
-    @Builder
-    @Getter
-    // DegreeMatcher makes it so that 2 different degree objects with the same property are considered the same
-    // even if they are distinct objects within Java.
-    private static class DegreeMatcher implements ArgumentMatcher<Degree> {
-        private Degree left;
-
-        @Override
-        public boolean matches(Degree right) {
-            return left.getId().equals(right.getId()) &&
-                    left.getName().equals(right.getName());
-        }
-    }
 
 }

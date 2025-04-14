@@ -1,5 +1,6 @@
 package com.example.sample_project.controller;
 
+import com.example.sample_project.matchers.StudentMatcher;
 import com.example.sample_project.model.Staff;
 import com.example.sample_project.model.Student;
 import lombok.Builder;
@@ -331,7 +332,7 @@ public class StudentControllerTest {
                 }
                 """;
 
-        StudentControllerTest.StudentMatcher studentPropertyMatcher = StudentControllerTest.StudentMatcher.builder().left(newStudent).build();
+        StudentMatcher studentPropertyMatcher = StudentMatcher.builder().left(newStudent).build();
 
         // When
         when(studentRepository.updateStudent(argThat(studentPropertyMatcher)))
@@ -371,7 +372,7 @@ public class StudentControllerTest {
                 }
                 """;
 
-        StudentControllerTest.StudentMatcher studentPropertyMatcher = StudentControllerTest.StudentMatcher.builder().left(newStudent).build();
+        StudentMatcher studentPropertyMatcher = StudentMatcher.builder().left(newStudent).build();
 
         // When
         when(studentRepository.updateStudent(argThat(studentPropertyMatcher)))
@@ -409,7 +410,7 @@ public class StudentControllerTest {
                 }
                 """;
 
-        StudentControllerTest.StudentMatcher studentPropertyMatcher = StudentControllerTest.StudentMatcher.builder().left(newStudent).build();
+        StudentMatcher studentPropertyMatcher = StudentMatcher.builder().left(newStudent).build();
 
         // When
         when(studentRepository.updateStudent(argThat(studentPropertyMatcher)))
@@ -495,22 +496,4 @@ public class StudentControllerTest {
         }
         return studentList;
     }
-
-    @Builder
-    @Getter
-    // StudentMatcher makes it so that 2 different student objects with the same property are considered the same
-    // even if they are distinct objects within Java.
-    private static class StudentMatcher implements ArgumentMatcher<Student> {
-        private Student left;
-
-        @Override
-        public boolean matches(Student right) {
-            return left.getId().equals(right.getId()) &&
-                    left.getName().equals(right.getName()) &&
-                    left.getEmail().equals(right.getEmail()) &&
-                    left.getPhone_number().equals(right.getPhone_number()) &&
-                    left.getDegree_id().equals(right.getDegree_id());
-        }
-    }
-
 }

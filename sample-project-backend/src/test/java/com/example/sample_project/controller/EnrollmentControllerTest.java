@@ -1,6 +1,7 @@
 package com.example.sample_project.controller;
 
 import com.example.sample_project.SampleProjectApplication;
+import com.example.sample_project.matchers.EnrollmentMatcher;
 import com.example.sample_project.model.Enrollment;
 import com.example.sample_project.model.Student;
 import com.example.sample_project.repository.CourseRepository;
@@ -256,7 +257,7 @@ public class EnrollmentControllerTest {
                 }
                 """;
 
-        EnrollmentControllerTest.EnrollmentMatcher enrollmentPropertyMatcher = EnrollmentControllerTest.EnrollmentMatcher.builder().left(newEnrollment).build();
+        EnrollmentMatcher enrollmentPropertyMatcher = EnrollmentMatcher.builder().left(newEnrollment).build();
 
         // When
         when(enrollmentRepository.getEnrollmentById(student_id, course_id))
@@ -297,7 +298,7 @@ public class EnrollmentControllerTest {
                 }
                 """;
 
-        EnrollmentControllerTest.EnrollmentMatcher enrollmentPropertyMatcher = EnrollmentControllerTest.EnrollmentMatcher.builder().left(newEnrollment).build();
+        EnrollmentMatcher enrollmentPropertyMatcher = EnrollmentMatcher.builder().left(newEnrollment).build();
 
         // When
         when(enrollmentRepository.getEnrollmentById(student_id, course_id))
@@ -335,8 +336,7 @@ public class EnrollmentControllerTest {
                     "status": "Completed"
                 }
                 """;
-
-        EnrollmentControllerTest.EnrollmentMatcher enrollmentPropertyMatcher = EnrollmentControllerTest.EnrollmentMatcher.builder().left(newEnrollment).build();
+        EnrollmentMatcher enrollmentPropertyMatcher = EnrollmentMatcher.builder().left(newEnrollment).build();
 
         // When
         when(enrollmentRepository.getEnrollmentById(student_id, course_id))
@@ -416,18 +416,4 @@ public class EnrollmentControllerTest {
         return enrollmentList;
     }
 
-    @Builder
-    @Getter
-    // EnrollmentMatcher makes it so that 2 different enrollment objects with the same property are considered the same
-    // even if they are distinct objects within Java.
-    private static class EnrollmentMatcher implements ArgumentMatcher<Enrollment> {
-        private Enrollment left;
-
-        @Override
-        public boolean matches(Enrollment right) {
-            return left.getStudent().equals(right.getStudent()) &&
-                    left.getCourse().equals(right.getCourse()) &&
-                    left.getStatus().equals(right.getStatus());
-        }
-    }
 }
