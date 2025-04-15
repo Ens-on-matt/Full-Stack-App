@@ -61,11 +61,9 @@ public class EnrollmentRepository {
         parameters.addValue("course_id", course);
 
         List<Enrollment> enrollments = getEnrollments(sql, parameters, getEnrollmentRowMapper());
-        if (enrollments.isEmpty()) {
-            return Optional.empty();
-        } else {
-            return Optional.of(enrollments.get(0));
-        }
+        if (enrollments.isEmpty()) {return Optional.empty(); }
+
+        return Optional.of(enrollments.get(0));
     }
 
     public List<Enrollment> listAllEnrollmentsForStudent(@NonNull Integer student_id) {

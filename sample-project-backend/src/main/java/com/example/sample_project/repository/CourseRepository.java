@@ -63,7 +63,10 @@ public class CourseRepository {
 
         parameters.addValue("course_id", id);
 
-        return Optional.of(getCourses(sql, parameters, getCourseRowMapper()).get(0));
+        List<Course> course = getCourses(sql, parameters, getCourseRowMapper());
+        if (course.isEmpty()) { return Optional.empty(); }
+
+        return Optional.of(course.get(0));
     }
 
     public List<Course> getPageOfCourse(@NonNull Integer PageNo, @NonNull Integer PageSize, @NonNull Integer Offset) {

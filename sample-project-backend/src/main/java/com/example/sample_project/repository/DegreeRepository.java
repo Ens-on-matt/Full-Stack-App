@@ -61,7 +61,10 @@ public class DegreeRepository {
 
         parameters.addValue("degree_id", id);
 
-        return Optional.of(getDegrees(sql, parameters, getDegreeRowMapper()).get(0));
+        List<Degree> degree = getDegrees(sql, parameters, getDegreeRowMapper());
+        if (degree.isEmpty()) { return Optional.empty(); }
+
+        return Optional.of(degree.get(0));
     }
 
     public List<Degree> getPageOfDegree(@NonNull Integer PageNo, @NonNull Integer PageSize, @NonNull Integer Offset) {

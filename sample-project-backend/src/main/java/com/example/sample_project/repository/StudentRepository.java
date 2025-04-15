@@ -65,7 +65,10 @@ public class StudentRepository {
 
         parameters.addValue("student_id", id);
 
-        return Optional.of(getStudents(sql, parameters, getStudentRowMapper()).get(0));
+        List<Student> student = getStudents(sql, parameters, getStudentRowMapper());
+        if (student.isEmpty()) { return Optional.empty(); }
+
+        return Optional.of(student.get(0));
     }
 
     public List<Student> getPageOfStudents(@NonNull Integer PageNo, @NonNull Integer PageSize, @NonNull Integer Offset) {

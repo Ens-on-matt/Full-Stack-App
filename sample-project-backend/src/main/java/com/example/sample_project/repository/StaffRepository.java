@@ -68,7 +68,10 @@ public class StaffRepository {
 
         parameters.addValue("staff_id", id);
 
-        return Optional.of(getStaffMembers(sql, parameters, getStaffRowMapper()).get(0));
+        List<Staff> staff = getStaffMembers(sql, parameters, getStaffRowMapper());
+        if (staff.isEmpty()) { return Optional.empty(); }
+
+        return Optional.of(staff.get(0));
     }
 
     public List<Staff> getPageOfStaff(@NonNull Integer PageNo, @NonNull Integer PageSize, @NonNull Integer Offset) {
@@ -290,7 +293,4 @@ public class StaffRepository {
                         .job(rs.getString("job"))
                         .build();
     }
-
-
-
 }
