@@ -1,10 +1,25 @@
 # Full Stack University DB Management Application
 
-![image](https://github.com/user-attachments/assets/5085006d-b321-41fa-b0ef-9f57492b02a3)
+![image](https://github.com/user-attachments/assets/30840449-83c2-4808-8b01-faea178d72a7)
+
 
 This project contains a implementation of university database management application.
 
 The purpose of this application was to create a full-stack application that consists of technologies and libraries that are used within the corporate world.
+Using this app, you can view, search, edit, add and delete entries in the database that it is connected to. 
+
+The app is set up using a university-like design for the database (so there are tables for staff, students, courses and degrees).
+
+
+
+A seperate table, enrollments, is used to manage student progress in the courses and can be interacted with indirectly (via Student Enrollment tab).
+![image](https://github.com/user-attachments/assets/2dbb8e7d-14de-4c5a-a4dd-4cb61abf98d1)
+
+
+
+Courses that the students are currently enrolled in can be conviently checked via Course Report
+![image](https://github.com/user-attachments/assets/a91d7028-12ca-41ed-808c-472b1df7cab7)
+
 
 
 ## Typical use
@@ -79,6 +94,4 @@ This application consists of 3 applications that communicate between each other:
 ## Database data
 The PostgreSQL database is filled with test data from 3 PostgreSQL scripts using Flyway. 
 
-ALL DATA INCLUDED DOES NOT CONTAIN INFORMATION ON ANY REAL LIFE PEOPLE. 
-
-ANY ASSOCIATIONS WITH ANY LIVING/DEAD PERSONS IS THE RESULT OF PURE COINCIDENCE.
+All data inside the sample database available with this application was generated randomly and does not contain information on any real people.
