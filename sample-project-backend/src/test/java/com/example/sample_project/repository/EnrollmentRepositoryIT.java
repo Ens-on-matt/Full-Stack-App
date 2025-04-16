@@ -1,5 +1,7 @@
 package com.example.sample_project.repository;
 
+import com.example.sample_project.SampleProjectApplication;
+import com.example.sample_project.model.Degree;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
@@ -11,24 +13,17 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.annotation.Order;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.datasource.init.ScriptUtils;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
-
-import com.example.sample_project.SampleProjectApplication;
-import com.example.sample_project.model.Course;
-import com.example.sample_project.model.Degree;
 
 import javax.sql.DataSource;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
-import static org.assertj.core.api.Assertions.assertThat;
 
-import static org.assertj.core.api.BDDAssertions.then;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -38,9 +33,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @ActiveProfiles("test")
 @SpringBootTest
 @TestClassOrder(ClassOrderer.OrderAnnotation.class)
-public class DegreeRepositoryIT {
+public class EnrollmentRepositoryIT {
 
-    private final Logger LOGGER = LoggerFactory.getLogger(DegreeRepositoryIT.class);
+    private final Logger LOGGER = LoggerFactory.getLogger(EnrollmentRepositoryIT.class);
     private static Integer newDegreeID = -1;
 
     @Autowired

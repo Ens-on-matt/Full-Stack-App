@@ -31,8 +31,8 @@ import static org.junit.jupiter.api.Assertions.*;
 @TestPropertySource(locations = "classpath:application-test.properties")
 @ContextConfiguration(classes = {SampleProjectApplication.class})
 @ActiveProfiles("test")
-@SpringBootTest
 @TestClassOrder(ClassOrderer.OrderAnnotation.class)
+@SpringBootTest
 public class StaffRepositoryIT {
 
     private final Logger LOGGER = LoggerFactory.getLogger(StaffRepositoryIT.class);
@@ -243,7 +243,6 @@ public class StaffRepositoryIT {
     @Test
     @Order(1)
     public void testSaveNewStaffMember () {
-
         // Given
         Staff newStaff = Staff.builder().id(-1).name("Larry Jenkins").email("larryster@xyz.com")
                 .phone_number("1111111111").salary(50000).job("Student Support").build();
@@ -272,7 +271,12 @@ public class StaffRepositoryIT {
         // Then
         assertTrue(optNewStaff.isPresent());
 
-        //assertEquals(optNewStaff.get(), newStaff);
+        assertEquals(optNewStaff.get().getId(), newStaff.getId());
+        assertEquals(optNewStaff.get().getName(), newStaff.getName());
+        assertEquals(optNewStaff.get().getEmail(), newStaff.getEmail());
+        assertEquals(optNewStaff.get().getPhone_number(), newStaff.getPhone_number());
+        assertEquals(optNewStaff.get().getSalary(), newStaff.getSalary());
+        assertEquals(optNewStaff.get().getJob(), newStaff.getJob());
     }
 
     @Test

@@ -1,13 +1,18 @@
 package com.example.sample_project.repository;
 
+import com.example.sample_project.model.Staff;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.ClassOrderer;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestClassOrder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 // import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.annotation.Order;
 import org.springframework.jdbc.core.JdbcTemplate;
 // import org.springframework.jdbc.datasource.init.ScriptUtils;
 import org.springframework.test.context.ActiveProfiles;
@@ -30,10 +35,12 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @TestPropertySource(locations = "classpath:application-test.properties")
 @ContextConfiguration(classes = {SampleProjectApplication.class})
 @ActiveProfiles("test")
+@TestClassOrder(ClassOrderer.OrderAnnotation.class)
 @SpringBootTest
 public class StudentRepositoryIT {
 
     private final Logger LOGGER = LoggerFactory.getLogger(StudentRepositoryIT.class);
+    private static Integer newStudentID;
 
     @Autowired
     private DataSource dataSource;
@@ -48,7 +55,7 @@ public class StudentRepositoryIT {
     }
 
     @Test
-    public void listStudents_success() {
+    public void listAllStudents() {
         //Given
 
         LOGGER.info ("In listStudents_success");
@@ -61,7 +68,7 @@ public class StudentRepositoryIT {
     }
 
     @Test
-    public void getStaffById_success() {
+    public void getStaffById_Valid() {
         //Given
         Integer id = 1;
 
@@ -75,6 +82,151 @@ public class StudentRepositoryIT {
 
         Student student = studentOpt.get();
         
-        assertThat(student.getName()).isEqualTo("Mason Stanton");
+        assertThat(student.getName()).isEqualTo("Lily Stuart");
+    }
+
+    @Test
+    @SneakyThrows
+    public void testGetStudentById_Invalid() {
+        // Given
+        Integer id = -50;
+
+        // When
+        Optional<Student> studentOpt= studentRepository.getStudentById(id);
+
+        // Then
+        assertTrue(studentOpt.isEmpty());
+    }
+
+    @Test
+    public void testGetPageOfStudent_Valid() {
+        // Given
+        Integer pageNum = 0, pageSize = 15, offset = 0;
+
+        // When
+        List<Student> studentList = studentRepository.getPageOfStudents(pageNum, pageSize, offset);
+
+        // Then
+        assertEquals(pageSize, studentList.size());
+    }
+
+    @Test
+    public void testGetPageOfStudent_HugeSize() {
+        // Given
+        Integer pageNum = 0, pageSize = 50000, offset = 0;
+
+        // When
+        List<Student> studentList = studentRepository.getPageOfStudents(pageNum, pageSize, offset);
+
+        // Then
+        assertTrue(studentList.size() < pageSize);
+    }
+
+
+    @Test
+    public void testGetPageOfStudent_NoResults() {
+        // Given
+        Integer pageNum = 50000, pageSize = 15, offset = 0;
+
+        // When
+        List<Student> studentList = studentRepository.getPageOfStudents(pageNum, pageSize, offset);
+
+        // Then
+        assertEquals(0, studentList.size());
+    }
+
+
+    @Test
+    public void testSearchStudents_ReasonableSearch() {
+        // Given
+        Integer pageSize = 15;
+        String searchTerm = "Larry";
+
+        // When
+        List<Student> studentList = studentRepository.searchStudents(searchTerm, pageSize);
+
+        // Then
+        assertTrue(studentList.size() > 0);
+    }
+
+    @Test
+    public void testSearchStudents_BadSearch() {
+        // Given
+        Integer pageSize = 15;
+        String searchTerm = "Jsafhdksfahieajfskdnfjaebfeajbfkdsnkfjwbaekjf";
+
+        // When
+        List<Student> studentList = studentRepository.searchStudents(searchTerm, pageSize);
+
+        // Then
+        assertEquals(0, studentList.size());
+    }
+
+    @Test
+    public void testSizeOfTable() {
+        // Given
+
+        // When
+        Integer studentTableSize = studentRepository.getSizeOfStudentTable();
+
+        // Then
+        assertTrue(studentTableSize > 0);
+    }
+
+    @Test
+    @Order(1)
+    public void testSaveNewStudent () {
+        LOGGER.info("Should be 1");
+
+        // Given
+        Student newStudent = Student.builder().id(-1).name("Larry Jenkins").email("larryster@xyz.com")
+                .phone_number("1111111111").degree_id(5).build();
+
+        // When
+        Optional<Integer> optNewId = studentRepository.saveNewStudent(newStudent);
+
+        // Then
+        assertTrue(optNewId.isPresent());
+        newStudentID = optNewId.get();
+        assertTrue(newStudentID > 0);
+    }
+
+    @Test
+    @Order(2)
+    public void testUpdateStudent() {
+        LOGGER.info("Should be 2");
+        assertTrue(newStudentID > 0);
+
+        // Given
+        Student newStudent = Student.builder().id(newStudentID).name("Harry Wilson").email("harry123@web.xyz")
+                .phone_number("321321321").degree_id(8).build();
+
+        // When
+        Optional<Student> optNewStudent = studentRepository.updateStudent(newStudent);
+
+        // Then
+        assertTrue(optNewStudent.isPresent());
+
+        assertEquals(optNewStudent.get().getId(), newStudent.getId());
+        assertEquals(optNewStudent.get().getName(), newStudent.getName());
+        assertEquals(optNewStudent.get().getEmail(), newStudent.getEmail());
+        assertEquals(optNewStudent.get().getPhone_number(), newStudent.getPhone_number());
+        assertEquals(optNewStudent.get().getDegree_id(), newStudent.getDegree_id());
+    }
+
+    @Test
+    @Order(3)
+    public void testDeleteStudent() {
+        LOGGER.info("Should be 3");
+        assertTrue(newStudentID > 0);
+
+        // Given
+        Optional<Student> studentToDelete = studentRepository.getStudentById(newStudentID);
+
+        // When
+        assertTrue(studentToDelete.isPresent());
+
+        // Then
+        assertTrue(studentRepository.deleteStudent(studentToDelete.get().getId()));
     }
 }
