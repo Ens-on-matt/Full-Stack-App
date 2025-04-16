@@ -3,21 +3,21 @@
 ![image](https://github.com/user-attachments/assets/30840449-83c2-4808-8b01-faea178d72a7)
 
 
-This project contains a implementation of university database management application.
+This project contains an implementation of an university database management application.
 
-The purpose of this application was to create a full-stack application that consists of technologies and libraries that are used within the corporate world.
+The purpose of this application was to create a full-stack application that consists of technologies and libraries that are typically used within the corporate world.
 Using this app, you can view, search, edit, add and delete entries in the database that it is connected to. 
 
-The app is set up using a university-like design for the database (so there are tables for staff, students, courses and degrees).
+The database was designed around a theoretical university enrollment and course assignment system consisting of students, courses, degrees and staff members.
 
 
 
-A seperate table, enrollments, is used to manage student progress in the courses and can be interacted with indirectly (via Student Enrollment tab).
+A separate table, enrollments, is used for assigning students to multiple courses using the Student Enrollment webpage.
 ![image](https://github.com/user-attachments/assets/2dbb8e7d-14de-4c5a-a4dd-4cb61abf98d1)
 
 
 
-Courses that the students are currently enrolled in can be conviently checked via Course Report
+Courses that the students are currently enrolled in can be conviently checked using the Course Report webpage.
 ![image](https://github.com/user-attachments/assets/a91d7028-12ca-41ed-808c-472b1df7cab7)
 
 
@@ -55,8 +55,11 @@ And press update - you'll be notified via toastify whether it was successful or 
 
 # REQUIRED DEPENDENCIES
 
-- [Node.js](https://nodejs.org/en)
-- [Maven](https://maven.apache.org/install.html)
+- [Java v17.0](https://openjdk.org/projects/jdk/17)
+- [SpringBoot v3.3](https://docs.spring.io/spring-boot/installing.html)
+- [Maven v3.9](https://maven.apache.org/install.html)
+- [Node.js v23.9](https://nodejs.org/en)
+- [React v19.0](https://react.dev/learn/installation)
 - [PostgreSQL](https://www.postgresql.org/download/)
 
 
@@ -64,9 +67,9 @@ And press update - you'll be notified via toastify whether it was successful or 
 
 First download this repository. 
 
-Using a postgreSQL database manager of your choice, create a new empty database
+Using a postgreSQL database manager, for example PgAdmin4, create a new empty database
 
-Open sample-project-backend in IntelliJ (or your IDE of choice)
+Open sample-project-backend in your IDE (e.g. IntelliJ)
   - Edit the applications.properties to point the URL, username and password of spring.datasource to this newly made database
     - Will use port 8080 by default (server.port)
   - After this, run the project
