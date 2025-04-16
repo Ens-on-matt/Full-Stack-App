@@ -67,7 +67,7 @@ public class DegreeRepository {
         return Optional.of(degree.get(0));
     }
 
-    public List<Degree> getPageOfDegree(@NonNull Integer PageNo, @NonNull Integer PageSize, @NonNull Integer Offset) {
+    public List<Degree> getPageOfDegrees(@NonNull Integer PageNo, @NonNull Integer PageSize, @NonNull Integer Offset) {
         MapSqlParameterSource parameters = new MapSqlParameterSource();
         String sql = """
             SELECT 

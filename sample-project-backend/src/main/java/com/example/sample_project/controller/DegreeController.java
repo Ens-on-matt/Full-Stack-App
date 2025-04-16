@@ -69,7 +69,7 @@ public class DegreeController {
                                                            @PathVariable Integer pageSize) {
         LOGGER.info("Controller listDegreePage called");
 
-        List<Degree> DegreeList = degreeRepository.getPageOfDegree(pageNo, pageSize, 0);
+        List<Degree> DegreeList = degreeRepository.getPageOfDegrees(pageNo, pageSize, 0);
         int totalPages = degreeRepository.getSizeOfDegreeTable();
         DegreePageDTO pageResponse = new DegreePageDTO(DegreeList, totalPages);
 

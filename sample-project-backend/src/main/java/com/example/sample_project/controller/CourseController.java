@@ -69,7 +69,7 @@ public class CourseController {
                                                            @PathVariable Integer pageSize) {
         LOGGER.info("Controller listCoursePage called");
 
-        List<Course> CourseList = courseRepository.getPageOfCourse(pageNo, pageSize, 0);
+        List<Course> CourseList = courseRepository.getPageOfCourses(pageNo, pageSize, 0);
         int totalPages = courseRepository.getSizeOfCourseTable();
         CoursePageDTO pageResponse = new CoursePageDTO(CourseList, totalPages);
 

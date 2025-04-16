@@ -69,7 +69,7 @@ public class CourseRepository {
         return Optional.of(course.get(0));
     }
 
-    public List<Course> getPageOfCourse(@NonNull Integer PageNo, @NonNull Integer PageSize, @NonNull Integer Offset) {
+    public List<Course> getPageOfCourses(@NonNull Integer PageNo, @NonNull Integer PageSize, @NonNull Integer Offset) {
         MapSqlParameterSource parameters = new MapSqlParameterSource();
         String sql = """
             SELECT 
@@ -189,7 +189,6 @@ public class CourseRepository {
             return false;
         }
     }
-
 
     public List<Course> getCoursesRequiredForDegree(@NonNull String degree) {
         
