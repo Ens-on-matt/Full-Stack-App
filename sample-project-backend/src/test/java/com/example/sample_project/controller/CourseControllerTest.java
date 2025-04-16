@@ -1,17 +1,7 @@
 package com.example.sample_project.controller;
 
 import com.example.sample_project.matchers.CourseMatcher;
-import com.example.sample_project.model.Degree;
-import com.example.sample_project.model.Staff;
-import com.example.sample_project.model.Student;
-import lombok.Builder;
-import lombok.Getter;
-import org.hamcrest.Matchers;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentMatcher;
-import org.mockito.ArgumentMatchers;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -38,7 +28,6 @@ import com.example.sample_project.SampleProjectApplication;
 import com.example.sample_project.model.Course;
 import com.example.sample_project.repository.CourseRepository;
 
-import io.micrometer.common.lang.NonNull;
 import lombok.SneakyThrows;
 
 @SpringBootTest(classes = SampleProjectApplication.class)
@@ -246,7 +235,7 @@ public class CourseControllerTest {
                  """;
 
         // When
-        when(courseRepository.getPageOfCourse(pageNumber, pageSize, offset))
+        when(courseRepository.getPageOfCourses(pageNumber, pageSize, offset))
                 .thenReturn(courseList);
 
         when(courseRepository.getSizeOfCourseTable())

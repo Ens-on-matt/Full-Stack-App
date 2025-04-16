@@ -1,16 +1,7 @@
 package com.example.sample_project.controller;
 
 import com.example.sample_project.matchers.DegreeMatcher;
-import com.example.sample_project.model.Staff;
-import com.example.sample_project.model.Student;
-import lombok.Builder;
-import lombok.Getter;
-import org.hamcrest.Matchers;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentMatcher;
-import org.mockito.ArgumentMatchers;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -37,7 +28,6 @@ import com.example.sample_project.SampleProjectApplication;
 import com.example.sample_project.model.Degree;
 import com.example.sample_project.repository.DegreeRepository;
 
-import io.micrometer.common.lang.NonNull;
 import lombok.SneakyThrows;
 
 @SpringBootTest(classes = SampleProjectApplication.class)
@@ -207,7 +197,7 @@ public class DegreeControllerTest {
                  """;
 
         // When
-        when(degreeRepository.getPageOfDegree(pageNumber, pageSize, offset))
+        when(degreeRepository.getPageOfDegrees(pageNumber, pageSize, offset))
                 .thenReturn(degreeList);
 
         when(degreeRepository.getSizeOfDegreeTable())
