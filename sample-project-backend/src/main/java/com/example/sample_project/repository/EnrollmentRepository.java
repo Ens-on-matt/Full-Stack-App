@@ -99,43 +99,6 @@ public class EnrollmentRepository {
         return getEnrollments(sql, parameters, getEnrollmentRowMapper());
     }
 
-    public List<Enrollment> getPageOfEnrollment(@NonNull Integer PageNo, @NonNull Integer PageSize, @NonNull Integer Offset) {
-        MapSqlParameterSource parameters = new MapSqlParameterSource();
-        String sql = """
-            SELECT 
-                  student,
-                  course,
-                  status
-            FROM main.enrollment
-            ORDER BY id ASC 
-            OFFSET :EntryOffset ROWS
-            FETCH FIRST :PageSize ROWS ONLY
-                    """;
-
-        log.debug("Query {}", sql);
-        parameters.addValue("EntryOffset", PageNo*PageSize + Offset);
-        parameters.addValue("PageSize", PageSize);
-
-        return getEnrollments(sql, parameters, getEnrollmentRowMapper());
-    }
-
-    public List<Enrollment> searchEnrollments (@NonNull String searchTerm, @NonNull Integer PageSize) {
-        MapSqlParameterSource parameters = new MapSqlParameterSource();
-        String sql = """                
-            SELECT 
-                  student,
-                  course,
-                  status
-            FROM main.enrollment
-            ORDER BY similarity(name, :searchTerm) DESC
-            FETCH FIRST :PageSize ROWS ONLY
-                """;
-
-        parameters.addValue("searchTerm", searchTerm);
-        parameters.addValue("PageSize", PageSize);
-        return getEnrollments(sql, parameters, getEnrollmentRowMapper());
-    }
-
     public Optional<Enrollment> saveNewEnrollment(@NonNull Enrollment enrollment) {
         log.info("Repository saveNewEnrollment called");
 
