@@ -16,7 +16,6 @@ import org.springframework.stereotype.Repository;
 
 import com.example.sample_project.model.Staff;
 
-import static com.example.sample_project.repository.GenericRowMappers.getIDRowMapper;
 import static com.example.sample_project.repository.GenericRowMappers.getTableCountRowMapper;
 
 @Slf4j

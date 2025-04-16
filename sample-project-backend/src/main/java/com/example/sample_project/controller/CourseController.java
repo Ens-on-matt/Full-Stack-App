@@ -19,7 +19,6 @@ import java.util.Optional;
 
 import static com.example.sample_project.controller.Response.notFound404;
 
-//@Validated
 @RequiredArgsConstructor
 @RestController
 @RequestMapping(value = "/course", produces = MediaType.APPLICATION_JSON_VALUE)

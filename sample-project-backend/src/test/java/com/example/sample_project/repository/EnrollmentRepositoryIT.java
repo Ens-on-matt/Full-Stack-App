@@ -43,7 +43,6 @@ public class EnrollmentRepositoryIT {
     @BeforeEach
     public void setup() throws SQLException {
         LOGGER.info("setting up DB");
-        //ScriptUtils.executeSqlScript(dataSource.getConnection(), new ClassPathResource("sql/alloc-data.sql"));
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
         enrollmentRepository = new EnrollmentRepository(jdbcTemplate);
     }

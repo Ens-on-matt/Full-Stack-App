@@ -1,6 +1,5 @@
 package com.example.sample_project;
 
-/* */
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -25,7 +24,6 @@ import lombok.extern.slf4j.Slf4j;
                 .allowedOrigins("*") //http://localhost:5173
                 .allowedMethods("GET", "POST", "PUT", "DELETE")
                 .allowedHeaders("*");
-                //.allowCredentials(false);
     }
 
     @Bean
@@ -42,23 +40,7 @@ import lombok.extern.slf4j.Slf4j;
                 .anyRequest().permitAll()
             );
 
-
         return http.build();
 
     }
-    // @Bean
-    // public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-    //     http.csrf(AbstractHttpConfigurer::disable)
-    //       .authorizeHttpRequests(authorizationManagerRequestMatcherRegistry ->
-    //               authorizationManagerRequestMatcherRegistry.requestMatchers(HttpMethod.DELETE).hasRole("ADMIN")
-    //                       .requestMatchers("/admin/**").hasAnyRole("ADMIN")
-    //                       .requestMatchers("/user/**").hasAnyRole("USER", "ADMIN")
-    //                       .requestMatchers("/login/**").permitAll()
-    //                       .anyRequest().authenticated())
-    //       .httpBasic(Customizer.withDefaults())
-    //       .sessionManagement(httpSecuritySessionManagementConfigurer -> httpSecuritySessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-
-    //     return http.build();
-    // }
-
 }

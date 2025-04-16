@@ -1,6 +1,5 @@
 package com.example.sample_project.repository;
 
-import com.example.sample_project.model.Staff;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.*;
@@ -8,9 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-// import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.core.JdbcTemplate;
-// import org.springframework.jdbc.datasource.init.ScriptUtils;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
@@ -45,7 +42,6 @@ public class StudentRepositoryIT {
     @BeforeEach
     public void setup() throws SQLException {
         LOGGER.info("setting up DB");
-        //ScriptUtils.executeSqlScript(dataSource.getConnection(), new ClassPathResource("sql/alloc-data.sql"));
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
         studentRepository = new StudentRepository(jdbcTemplate);
     }

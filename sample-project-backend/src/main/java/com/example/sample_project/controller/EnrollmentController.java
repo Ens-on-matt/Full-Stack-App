@@ -19,7 +19,6 @@ import java.util.Optional;
 import static com.example.sample_project.controller.Response.internalServer500;
 import static com.example.sample_project.controller.Response.notFound404;
 
-//@Validated
 @RequiredArgsConstructor
 @RestController
 @RequestMapping(value = "/enrollment", produces = MediaType.APPLICATION_JSON_VALUE)

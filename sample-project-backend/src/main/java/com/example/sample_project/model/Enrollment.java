@@ -1,6 +1,7 @@
 package com.example.sample_project.model;
 
 import com.example.sample_project.controller.ResponseObject;
+
 import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;

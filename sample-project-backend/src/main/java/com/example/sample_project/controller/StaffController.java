@@ -18,7 +18,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-//@Validated
 @RequiredArgsConstructor
 @RestController
 @RequestMapping(value = "/staff", produces = MediaType.APPLICATION_JSON_VALUE)
