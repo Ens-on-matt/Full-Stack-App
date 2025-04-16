@@ -3,16 +3,12 @@ package com.example.sample_project.repository;
 import com.example.sample_project.model.Staff;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.ClassOrderer;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestClassOrder;
+import org.junit.jupiter.api.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 // import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.annotation.Order;
 import org.springframework.jdbc.core.JdbcTemplate;
 // import org.springframework.jdbc.datasource.init.ScriptUtils;
 import org.springframework.test.context.ActiveProfiles;
@@ -35,7 +31,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @TestPropertySource(locations = "classpath:application-test.properties")
 @ContextConfiguration(classes = {SampleProjectApplication.class})
 @ActiveProfiles("test")
-@TestClassOrder(ClassOrderer.OrderAnnotation.class)
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @SpringBootTest
 public class StudentRepositoryIT {
 
@@ -173,8 +169,8 @@ public class StudentRepositoryIT {
         assertTrue(studentTableSize > 0);
     }
 
-    @Test
     @Order(1)
+    @Test
     public void testSaveNewStudent () {
         LOGGER.info("Should be 1");
 
@@ -191,8 +187,8 @@ public class StudentRepositoryIT {
         assertTrue(newStudentID > 0);
     }
 
-    @Test
     @Order(2)
+    @Test
     public void testUpdateStudent() {
         LOGGER.info("Should be 2");
         assertTrue(newStudentID > 0);
@@ -214,8 +210,8 @@ public class StudentRepositoryIT {
         assertEquals(optNewStudent.get().getDegree_id(), newStudent.getDegree_id());
     }
 
-    @Test
     @Order(3)
+    @Test
     public void testDeleteStudent() {
         LOGGER.info("Should be 3");
         assertTrue(newStudentID > 0);

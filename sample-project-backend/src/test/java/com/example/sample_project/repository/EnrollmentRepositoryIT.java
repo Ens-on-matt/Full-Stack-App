@@ -1,18 +1,14 @@
 package com.example.sample_project.repository;
 
 import com.example.sample_project.SampleProjectApplication;
-import com.example.sample_project.model.Degree;
+import com.example.sample_project.model.Enrollment;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.ClassOrderer;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestClassOrder;
+import org.junit.jupiter.api.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.core.annotation.Order;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
@@ -20,6 +16,7 @@ import org.springframework.test.context.TestPropertySource;
 
 import javax.sql.DataSource;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,192 +28,168 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @TestPropertySource(locations = "classpath:application-test.properties")
 @ContextConfiguration(classes = {SampleProjectApplication.class})
 @ActiveProfiles("test")
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @SpringBootTest
-@TestClassOrder(ClassOrderer.OrderAnnotation.class)
 public class EnrollmentRepositoryIT {
 
     private final Logger LOGGER = LoggerFactory.getLogger(EnrollmentRepositoryIT.class);
-    private static Integer newDegreeID = -1;
+    private static Integer newEnrollmentStudentID = -1;
+    private static Integer newEnrollmentCourseID = -1;
 
     @Autowired
     private DataSource dataSource;
-    private DegreeRepository degreeRepository;
+    private EnrollmentRepository enrollmentRepository;
 
     @BeforeEach
     public void setup() throws SQLException {
         LOGGER.info("setting up DB");
         //ScriptUtils.executeSqlScript(dataSource.getConnection(), new ClassPathResource("sql/alloc-data.sql"));
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
-        degreeRepository = new DegreeRepository(jdbcTemplate);
+        enrollmentRepository = new EnrollmentRepository(jdbcTemplate);
+    }
+
+    private List<Enrollment> createExampleEnrollmentList() {
+        Integer[] exampleStudentIds = {3,7,8};
+        String[] exampleStatus = {"Completed", "In progress", "Completed"};
+        List<Enrollment> enrollmentList = new ArrayList<>();
+        for (int i = 0; i < 3; i++) {
+            enrollmentList.add(Enrollment.builder()
+                    .student(exampleStudentIds[i])
+                    .course(i + 1)
+                    .status(exampleStatus[i])
+                    .build());
+        }
+        return enrollmentList;
+    }
+
+
+    @Test
+    @Order(1)
+    public void testSaveNewEnrollment () {
+        LOGGER.info("Should be 1");
+
+        // Given
+        Enrollment newEnrollment = Enrollment.builder().student(100).course(50).status("In progress").build();
+        List<Enrollment> enrollments = createExampleEnrollmentList();
+
+        // When
+        Optional<Enrollment> optNewEnrollment = enrollmentRepository.saveNewEnrollment(newEnrollment);
+
+        // Then
+        assertTrue(optNewEnrollment.isPresent());
+        newEnrollmentStudentID = optNewEnrollment.get().getStudent();
+        newEnrollmentCourseID = optNewEnrollment.get().getCourse();
+        assertTrue(newEnrollmentStudentID > 0);
+        assertTrue(newEnrollmentCourseID > 0);
+
+        for (Enrollment e : enrollments) {
+            enrollmentRepository.saveNewEnrollment(e);
+        }
     }
 
     @Test
-    public void listAllDegrees() {
+    @Order(2)
+    public void testUpdateEnrollmentStatus() {
+        LOGGER.info("Should be 2");
+        assertTrue(newEnrollmentStudentID > 0);
+        assertTrue(newEnrollmentCourseID > 0);
+
+        // Given
+        Enrollment newEnrollment = Enrollment.builder().student(newEnrollmentStudentID).course(newEnrollmentCourseID)
+                .status("Completed").build();
+
+        // When
+        Optional<Enrollment> optNewEnrollment = enrollmentRepository.updateEnrollmentStatus(newEnrollment);
+
+        // Then
+        assertTrue(optNewEnrollment.isPresent());
+
+        assertEquals(optNewEnrollment.get().getStudent(), newEnrollment.getStudent());
+        assertEquals(optNewEnrollment.get().getCourse(), newEnrollment.getCourse());
+        assertEquals(optNewEnrollment.get().getStatus(), newEnrollment.getStatus());
+    }
+
+    @Test
+    @Order(3)
+    public void testDeleteEnrollment() {
+        LOGGER.info("Should be 3");
+        assertTrue(newEnrollmentStudentID > 0);
+        assertTrue(newEnrollmentCourseID > 0);
+
+        // Given
+        Optional<Enrollment> enrollmentToDelete = enrollmentRepository.getEnrollmentById(newEnrollmentStudentID, newEnrollmentCourseID);
+
+        // When
+        assertTrue(enrollmentToDelete.isPresent());
+
+        // Then
+        assertTrue(enrollmentRepository.deleteEnrollment(enrollmentToDelete.get().getStudent(), enrollmentToDelete.get().getCourse()));
+    }
+
+    @Test
+    @Order(11)
+    public void cleanupTestEnrollments() {
+        for (Enrollment e : createExampleEnrollmentList()) {
+            assertTrue(enrollmentRepository.deleteEnrollment(e.getStudent(), e.getCourse()));
+        }
+    }
+
+
+    @Test
+    @Order(4)
+    public void listAllEnrollments() {
         //Given
 
-        LOGGER.info ("In listDegrees_success");
+        LOGGER.info ("In listEnrollments");
          // When
-        List<Degree> records = degreeRepository.listAllDegrees();
+        List<Enrollment> records = enrollmentRepository.listAllEnrollments();
 
         // Then
         assertTrue(records.size() > 0);
     }
 
     @Test
-    public void getDegreeById_Valid() {
+    @Order(5)
+    public void getEnrollmentById_Valid() {
         //Given
-        Integer id = 1;
+        Integer student_id = 3, course_id = 1;
 
-        LOGGER.info ("In getDegreeById_success id={}",id);
+        LOGGER.info ("In getEnrollmentById_Valid student={} course={}", student_id, course_id);
          // When
-        Optional<Degree> degreeOpt= degreeRepository.getDegreeById(id);
+        Optional<Enrollment> enrollmentOpt= enrollmentRepository.getEnrollmentById(student_id, course_id);
         
         // Then
         //assertEquals(50, records.size());
-        assertTrue(degreeOpt.isPresent());
+        assertTrue(enrollmentOpt.isPresent());
 
-        Degree degree = degreeOpt.get();
+        Enrollment enrollment = enrollmentOpt.get();
         
-        assertThat(degree.getName()).isEqualTo("Science");
+        assertThat(enrollment.getStatus()).isEqualTo("Completed");
     }
 
     @Test
     @SneakyThrows
-    public void testGetDegreeById_Invalid() {
+    @Order(6)
+    public void testGetEnrollmentById_Invalid() {
         // Given
-        Integer id = -50;
+        Integer student_id = -50, course_id = 10;
 
         // When
-        Optional<Degree> degreeOpt= degreeRepository.getDegreeById(id);
+        Optional<Enrollment> enrollmentOpt= enrollmentRepository.getEnrollmentById(student_id, course_id);
 
         // Then
-        assertTrue(degreeOpt.isEmpty());
+        assertTrue(enrollmentOpt.isEmpty());
     }
 
     @Test
-    public void testGetPageOfDegrees_Valid() {
-        // Given
-        Integer pageNum = 0, pageSize = 8, offset = 0;
-
-        // When
-        List<Degree> degreeList = degreeRepository.getPageOfDegrees(pageNum, pageSize, offset);
-
-        // Then
-        assertEquals(pageSize, degreeList.size());
-    }
-
-    @Test
-    public void testGetPageOfDegrees_HugeSize() {
-        // Given
-        Integer pageNum = 0, pageSize = 50000, offset = 0;
-
-        // When
-        List<Degree> degreeList = degreeRepository.getPageOfDegrees(pageNum, pageSize, offset);
-
-        // Then
-        assertTrue(degreeList.size() < pageSize);
-    }
-
-
-    @Test
-    public void testGetPageOfDegrees_NoResults() {
-        // Given
-        Integer pageNum = 50000, pageSize = 15, offset = 0;
-
-        // When
-        List<Degree> degreeList = degreeRepository.getPageOfDegrees(pageNum, pageSize, offset);
-
-        // Then
-        assertEquals(0, degreeList.size());
-    }
-
-
-    @Test
-    public void testSearchDegrees_ReasonableSearch() {
-        // Given
-        Integer pageSize = 15;
-        String searchTerm = "Larry";
-
-        // When
-        List<Degree> degreeList = degreeRepository.searchDegrees(searchTerm, pageSize);
-
-        // Then
-        assertTrue(degreeList.size() > 0);
-    }
-
-    @Test
-    public void testSearchDegrees_BadSearch() {
-        // Given
-        Integer pageSize = 15;
-        String searchTerm = "Jsafhdksfahieajfskdnfjaebfeajbfkdsnkfjwbaekjf";
-
-        // When
-        List<Degree> degreeList = degreeRepository.searchDegrees(searchTerm, pageSize);
-
-        // Then
-        assertEquals(0, degreeList.size());
-    }
-
-    @Test
+    @Order(7)
     public void testSizeOfTable() {
         // Given
 
         // When
-        Integer degreeTableSize = degreeRepository.getSizeOfDegreeTable();
+        Integer enrollmentTableSize = enrollmentRepository.getSizeOfEnrollmentTable();
 
         // Then
-        assertTrue(degreeTableSize > 0);
-    }
-
-    @Test
-    @Order(1)
-    public void testSaveNewDegree () {
-        LOGGER.info("Should be 1");
-
-        // Given
-        Degree newDegree = Degree.builder().id(-1).name("Formal Music Theory").build();
-
-        // When
-        Optional<Integer> optNewId = degreeRepository.saveNewDegree(newDegree);
-
-        // Then
-        assertTrue(optNewId.isPresent());
-        newDegreeID = optNewId.get();
-        assertTrue(newDegreeID > 0);
-    }
-
-    @Test
-    @Order(2)
-    public void testUpdateDegree() {
-        LOGGER.info("Should be 2");
-        assertTrue(newDegreeID > 0);
-
-        // Given
-        Degree newDegree = Degree.builder().id(newDegreeID).name("Creative Writing").build();
-
-        // When
-        Optional<Degree> optNewDegree = degreeRepository.updateDegree(newDegree);
-
-        // Then
-        assertTrue(optNewDegree.isPresent());
-
-        assertEquals(optNewDegree.get().getId(), newDegree.getId());
-        assertEquals(optNewDegree.get().getName(), newDegree.getName());
-    }
-
-    @Test
-    @Order(3)
-    public void testDeleteDegree() {
-        LOGGER.info("Should be 3");
-        assertTrue(newDegreeID > 0);
-
-        // Given
-        Optional<Degree> degreeToDelete = degreeRepository.getDegreeById(newDegreeID);
-
-        // When
-        assertTrue(degreeToDelete.isPresent());
-
-        // Then
-        assertTrue(degreeRepository.deleteDegree(degreeToDelete.get().getId()));
+        assertTrue(enrollmentTableSize > 0);
     }
 }

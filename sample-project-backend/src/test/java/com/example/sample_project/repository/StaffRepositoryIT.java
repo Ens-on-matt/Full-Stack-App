@@ -9,7 +9,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 // import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.annotation.Order;
 import org.springframework.jdbc.core.JdbcTemplate;
 // import org.springframework.jdbc.datasource.init.ScriptUtils;
 import org.springframework.test.context.ActiveProfiles;
@@ -31,7 +30,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @TestPropertySource(locations = "classpath:application-test.properties")
 @ContextConfiguration(classes = {SampleProjectApplication.class})
 @ActiveProfiles("test")
-@TestClassOrder(ClassOrderer.OrderAnnotation.class)
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @SpringBootTest
 public class StaffRepositoryIT {
 

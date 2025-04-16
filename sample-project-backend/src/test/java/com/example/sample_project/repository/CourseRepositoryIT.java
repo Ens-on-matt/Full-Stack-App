@@ -3,15 +3,11 @@ package com.example.sample_project.repository;
 import com.example.sample_project.model.Student;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.ClassOrderer;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestClassOrder;
+import org.junit.jupiter.api.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.core.annotation.Order;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.init.ScriptUtils;
@@ -36,8 +32,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @TestPropertySource(locations = "classpath:application-test.properties")
 @ContextConfiguration(classes = {SampleProjectApplication.class})
 @ActiveProfiles("test")
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @SpringBootTest
-@TestClassOrder(ClassOrderer.OrderAnnotation.class)
 public class CourseRepositoryIT {
 
     private final Logger LOGGER = LoggerFactory.getLogger(CourseRepositoryIT.class);
